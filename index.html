@@ -36,9 +36,11 @@ button{
 <button onclick="showMessage()">Start</button>
 
 <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwKATLwLcZ7gZlK0tcb2kBXrZ9n-Kf_gyNxo5UY50W6BwWnBSDHZiMsSFYezXmRzKOG/exec";
+
 let tg = window.Telegram.WebApp;
 tg.expand();
-
+    
 function showMessage(){
     show_11375484().then(() => {
         alert("You have seen an ad!");
