@@ -6,34 +6,39 @@
 <title>My Cash Bot</title>
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script src="//libtl.com/sdk.js" data-zone="11375484" data-sdk="show_11375484"></script>
 
 <style>
 body{
+    margin:0;
     font-family:Arial,sans-serif;
     background:#1f2937;
-    color:#fff;
+    color:white;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+.container{
     text-align:center;
-    padding:40px;
 }
 button{
-    padding:15px 25px;
-    font-size:18px;
-    background:#0088cc;
-    color:white;
+    padding:15px 35px;
+    font-size:20px;
     border:none;
     border-radius:10px;
-    cursor:pointer;
+    background:#0099ff;
+    color:white;
 }
 </style>
 </head>
 
 <body>
 
+<div class="container">
 <h1>Welcome to My Cash Bot</h1>
 <p>Telegram Mini App Ready!</p>
-
-<button onclick="showMessage()">Start</button>
+<button onclick="startReward()">Start</button>
+</div>
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbwKATLwLcZ7gZlK0tcb2kBXrZ9n-Kf_gyNxo5UY50W6BwWnBSDHZiMsSFYezXmRzKOG/exec";
@@ -41,81 +46,37 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwKATLwLcZ7gZlK0tcb2kBX
 const tg = window.Telegram.WebApp;
 tg.expand();
 
-function showMessage() {
-
-    alert("Button Clicked!");
-
-    if (typeof show_11375484 !== "function") {
-        alert("Monetag SDK Loaded হয়নি!");
-        return;
-    }
+function startReward(){
 
     const user = tg.initDataUnsafe.user;
 
-    if (!user) {
+    if(!user){
         alert("Telegram User পাওয়া যায়নি!");
         return;
     }
 
-    .then(() => {
-        return fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                userId: user.id,
-                name: user.first_name,
-                amount: 1
-            })
-        });
+    fetch(API_URL,{
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            userId:user.id,
+            name:user.first_name,
+            amount:1
+        })
     })
-    .then(res => res.json())
-    .then(data => {
+    .then(response=>response.json())
+    .then(data=>{
         alert("Reward Added Successfully!");
     })
-    .catch(err => {
-        console.error(err);
-        alert("Error: " + err.message);
+    .catch(error=>{
+        alert("Error: "+error);
+        console.log(error);
     });
 
 }
 </script>
 
-</body>
-</html>
-<script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwKATLwLcZ7gZlK0tcb2kBXrZ9n-Kf_gyNxo5UY50W6BwWnBSDHZiMsSFYezXmRzKOG/exec";
-
-let tg = window.Telegram.WebApp;
-tg.expand();
-    
-function showMessage() {
-    show_11375484().then(() => {
-
-        const user = tg.initDataUnsafe.user;
-
-        fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                userId: user.id,
-                name: user.first_name,
-                amount: 1
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            alert("Reward Added Successfully!");
-        })
-        .catch(err => {
-            console.log(err);
-            alert("Error!");
-        });
-
-    });
-}
 </body>
 </html>
