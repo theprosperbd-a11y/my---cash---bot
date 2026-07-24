@@ -41,12 +41,32 @@ const API_URL = "https://script.google.com/macros/s/AKfycbwKATLwLcZ7gZlK0tcb2kBX
 let tg = window.Telegram.WebApp;
 tg.expand();
     
-function showMessage(){
-    show_11375484().then(() => {
-        alert("You have seen an ad!");
-    });
-}
-</script>
+44 function showMessage() {
+45     show_11375484().then(() => {
 
+46         const user = tg.initDataUnsafe.user;
+
+47         fetch(API_URL, {
+48             method: "POST",
+49             headers: {
+50                 "Content-Type": "application/json"
+51             },
+52             body: JSON.stringify({
+53                 userId: user.id,
+54                 name: user.first_name,
+55                 amount: 1
+56             })
+57         })
+58         .then(res => res.json())
+59         .then(data => {
+60             alert("Reward Added Successfully!");
+61         })
+62         .catch(err => {
+63             console.log(err);
+64             alert("Error!");
+65         });
+
+66     });
+67 }
 </body>
 </html>
