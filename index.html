@@ -35,6 +35,7 @@ button{
 <body>
 
 <div class="container">
+<p id="balance">Balance: 0</p>
 <h1>Welcome to My Cash Bot</h1>
 <p>Telegram Mini App Ready!</p>
 <button onclick="startReward()">Start</button>
@@ -47,7 +48,12 @@ button{
 const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
-
+fetch(API_URL + "?userId=" + tg.initDataUnsafe.user.id)
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("balance").innerText =
+      "Balance: " + data.balance;
+  });
 alert(JSON.stringify(tg.initDataUnsafe));
 
 function startReward(){
