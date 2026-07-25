@@ -44,7 +44,8 @@ button{
 <script>
 
     const API_URL = "https://script.google.com/macros/s/AKfycbz5iVhB-b0kDLlDCshkTdWRENjTBLyPOG3Xjvo2GMf3pvImzNHiGtGNhNiUA5yoa6AwLw/exec";
-const tg = window.Telegram.WebApp;
+console.log(API_URL);
+    const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
 fetch(API_URL + "?userId=" + tg.initDataUnsafe.user.id)
@@ -78,7 +79,7 @@ form.append("amount", "1");
 
 const res = await fetch(API_URL, {
   method: "POST",
-  mode: "cors",
+  redirect: "follow",
   headers: {
     "Content-Type": "application/x-www-form-urlencoded"
   },
