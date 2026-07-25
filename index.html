@@ -72,17 +72,16 @@ const user = tg.initDataUnsafe.user;
 alert("Sending request...");
 
 try {
-  const res = await fetch(API_URL, {
+  const form = new URLSearchParams();
+form.append("userId", user.id);
+form.append("name", user.first_name);
+form.append("amount", "1");
+
+const res = await fetch(API_URL, {
   method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    userId: user.id,
-    name: user.first_name,
-    amount: 1
-  })
+  body: form
 });
+
 
 
     const text = await res.text();
