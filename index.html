@@ -56,7 +56,7 @@ fetch(API_URL + "?userId=" + tg.initDataUnsafe.user.id)
   });
 alert(JSON.stringify(tg.initDataUnsafe));
 
-function startReward(){
+async function startReward(){
 
     const user = tg.initDataUnsafe.user;
 
@@ -68,18 +68,17 @@ function startReward(){
     show_11375484()
 .then(() => {
 
-    fetch(API_URL,{
-        method:"POST",
-        mode:"no-cors",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-            userId:user.id,
-            name:user.first_name,
-            amount:1
-        })
-    });
+    await fetch(API_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    userId: user.id,
+    name: user.first_name,
+    amount: 1
+  })
+});
 
     alert("Reward Added!");
 
