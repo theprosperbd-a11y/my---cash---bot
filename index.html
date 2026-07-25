@@ -69,7 +69,9 @@ const user = tg.initDataUnsafe.user;
 
 // await show_11375484();
 
+alert("Sending request...");
 
+try {
   const res = await fetch(API_URL, {
   method: "POST",
   headers: {
@@ -94,7 +96,9 @@ alert(text);
   
 
   alert("Reward Added!");
-
+} catch (e) {
+  alert("ERROR: " + e.message);
+}
 
 
 
