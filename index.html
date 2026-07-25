@@ -68,17 +68,29 @@ async function startReward(){
     await show_11375484();
 
 
-  await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      userId: user.id,
-      name: user.first_name,
-      amount: 1
-    })
-  });
+  const res = await fetch(API_URL, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    userId: user.id,
+    name: user.first_name,
+    amount: 1
+  })
+});
+
+alert(await res.text());
+
+
+    
+    
+
+      
+      
+      
+    
+  
 
   alert("Reward Added!");
 
