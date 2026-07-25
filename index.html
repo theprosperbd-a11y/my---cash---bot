@@ -58,7 +58,9 @@ fetch(API_URL + "?userId=" + tg.initDataUnsafe.user.id)
 
 async function startReward(){
 alert("Start button clicked");
-    const user = tg.initDataUnsafe.user;
+   alert(JSON.stringify(tg.initDataUnsafe));
+const user = tg.initDataUnsafe.user; 
+    
 
     if(!user){
         alert("Telegram User পাওয়া যায়নি!");
