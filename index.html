@@ -80,7 +80,7 @@ const res = await fetch(API_URL, {
   method: "POST",
   body: form
 });
-
+alert("Status: " + res.status);
 
 
     const text = await res.text();
