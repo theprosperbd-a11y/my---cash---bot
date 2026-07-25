@@ -65,8 +65,8 @@ async function startReward(){
         return;
     }
 
-    show_11375484()
-.then(async () => {
+    await show_11375484();
+
 
   await fetch(API_URL, {
     method: "POST",
@@ -82,7 +82,7 @@ async function startReward(){
 
   alert("Reward Added!");
 
-})
+
 .catch(() => {
   alert("Ad was skipped or failed!");
 });
