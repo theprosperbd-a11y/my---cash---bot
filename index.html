@@ -98,7 +98,9 @@ alert(text);
 
   alert("Reward Added!");
 } catch (e) {
-  alert("ERROR: " + e.message);
+  console.error(e);
+  alert(JSON.stringify(e));
+}
 }
 
 
