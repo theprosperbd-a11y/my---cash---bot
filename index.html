@@ -57,7 +57,9 @@ fetch(API_URL + "?userId=" + tg.initDataUnsafe.user.id)
 // alert(JSON.stringify(tg.initDataUnsafe));
 
 async function startReward(){
-alert("Start button clicked");
+alert("Start clicked");
+    alert(JSON.stringify(window.Telegram.WebApp.initDataUnsafe));
+    alert("Start button clicked");
    alert(JSON.stringify(tg.initDataUnsafe));
 const user = tg.initDataUnsafe.user; 
     alert("User OK");
