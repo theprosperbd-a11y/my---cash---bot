@@ -60,7 +60,7 @@ function loadBalance(){
         "Balance: " + data.balance;
     });
 }
-
+    
 // Reward Ad
 function startReward(){
 
@@ -71,16 +71,17 @@ function startReward(){
         alert("Ad Completed");
 
         fetch(API_URL,{
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                userId:user.id,
-                name:user.first_name,
-                amount:1
-            })
-        })
+    method:"POST",
+    mode:"cors",
+    headers:{
+        "Content-Type":"text/plain;charset=utf-8"
+    },
+    body:JSON.stringify({
+        userId:user.id,
+        name:user.first_name,
+        amount:1
+    })
+})
         .then(r=>r.json())
         .then(data=>{
             alert("POST Success");
