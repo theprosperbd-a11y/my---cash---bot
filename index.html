@@ -64,7 +64,11 @@ function loadBalance(){
 // Reward Ad
 function startReward(){
 
+    alert("Start");
+
     show_11375484().then(()=>{
+
+        alert("Ad Completed");
 
         fetch(API_URL,{
             method:"POST",
@@ -78,9 +82,12 @@ function startReward(){
             })
         })
         .then(r=>r.json())
-        .then(()=>{
+        .then(data=>{
+            alert("POST Success");
             loadBalance();
-            alert("Reward Added!");
+        })
+        .catch(err=>{
+            alert("POST Error: " + err);
         });
 
     }).catch(()=>{
