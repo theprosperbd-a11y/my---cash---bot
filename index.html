@@ -54,12 +54,12 @@ tg.expand();
 //   alert("Telegram User পাওয়া যায়নি");
 //   throw new Error("No Telegram User");
 // }
-    fetch(API_URL + "?userId=" + tg.initDataUnsafe.user.id)
-  .then(res => res.json())
-  .then(data => {
-    document.getElementById("balance").innerText =
-      "Balance: " + data.balance;
-  });
+    // fetch(API_URL + "?userId=" + tg.initDataUnsafe.user.id)
+//   .then(res => res.json())
+//   .then(data => {
+//     document.getElementById("balance").innerText =
+//       "Balance: " + data.balance;
+//   });
 // alert(JSON.stringify(tg.initDataUnsafe));
 
 async function startReward(){
