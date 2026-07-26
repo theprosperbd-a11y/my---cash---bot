@@ -50,10 +50,10 @@ console.log(API_URL);
     const tg = window.Telegram.WebApp;
 tg.ready();
 tg.expand();
-if (!tg.initDataUnsafe.user) {
-  alert("Telegram User পাওয়া যায়নি");
-  throw new Error("No Telegram User");
-}
+// if (!tg.initDataUnsafe.user) {
+//   alert("Telegram User পাওয়া যায়নি");
+//   throw new Error("No Telegram User");
+// }
     fetch(API_URL + "?userId=" + tg.initDataUnsafe.user.id)
   .then(res => res.json())
   .then(data => {
