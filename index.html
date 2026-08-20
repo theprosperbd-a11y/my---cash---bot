@@ -30,6 +30,9 @@ button{
     background:#22c55e;
     color:#fff;
 }
+button:disabled{
+    opacity:.6;
+}
 </style>
 </head>
 <body>
@@ -37,67 +40,141 @@ button{
 <div class="container">
     <h2>My Cash Bot</h2>
     <p id="balance">Balance: 0</p>
-    <button onclick="startReward()">Watch Reward Ad</button>
+    <button id="rewardBtn" onclick="startReward()">Watch Reward Ad</button>
 </div>
 
 <script>
 const tg = window.Telegram.WebApp;
 tg.expand();
 
-const user = tg.initDataUnsafe.user;
+const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
 
-// নতুন Apps Script URL
-const API_URL = "https://script.google.com/macros/s/AKfycbz5iVhB-b0kDLlDCshkTdWRENjTBLyPOG3Xjvo2GMf3pvImzNHiGtGNhNiUA5yoa6AwLw/exec";
+// IMPORTANT: keep this URL as the current deployed Web App URL.
+const API_URL =
+"https://script.google.com/macros/s/AKfycbz5iVhB-b0kDLlDCshkTdWRENjTBLyPOG3Xjvo2GMf3pvImzNHiGtGNhNiUA5yoa6AwLw/exec";
 
-// ব্যালেন্স লোড
-function loadBalance(){
-    if(!user) return;
 
-    fetch(API_URL + "?userId=" + user.id)
-    .then(r=>r.json())
-    .then(data=>{
-        document.getElementById("balance").innerText =
-        "Balance: " + data.balance;
-    });
+// =========================
+// SHOW MESSAGE
+// =========================
+function showMessage(message){
+    if (tg && tg.showAlert) {
+        tg.showAlert(message);
+    } else {
+        alert(message);
+    }
 }
-    
-// Reward Ad
-function startReward(){
 
-    alert("Start");
 
-    show_11375484().then(()=>{
+// =========================
+// LOAD BALANCE
+// =========================
+async function loadBalance(){
+    if (!user || !user.id) {
+        document.getElementById("balance").innerText =
+            "Balance: 0";
+        return;
+    }
 
-        alert("Ad Completed");
+    try {
+        const url =
+            API_URL + "?userId=" +
+            encodeURIComponent(String(user.id));
 
-        fetch(API_URL, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    userId: user.id,
-    name: user.first_name,
-    amount: 1
-  }),
-  redirect: "follow"
-})
-        .then(r=>r.json())
-        .then(data=>{
-            alert("POST Success");
-            loadBalance();
-        })
-        .catch(err=>{
-            alert("POST Error: " + err);
+        const r = await fetch(url, {
+            method: "GET",
+            cache: "no-store"
         });
 
-    }).catch(()=>{
-        alert("Ad was not completed.");
-    });
+        if (!r.ok) {
+            throw new Error("HTTP " + r.status);
+        }
 
+        const data = await r.json();
+
+        if (!data.success) {
+            throw new Error(data.error || "Balance fetch failed");
+        }
+
+        document.getElementById("balance").innerText =
+            "Balance: " + Number(data.balance || 0);
+
+    } catch (err) {
+        console.error("GET error:", err);
+        document.getElementById("balance").innerText =
+            "Balance: 0";
+    }
 }
-loadBalance();
 
+
+// =========================
+// REWARD AD
+// =========================
+async function startReward(){
+
+    if (!user || !user.id) {
+        showMessage("Telegram user information not found.");
+        return;
+    }
+
+    const btn = document.getElementById("rewardBtn");
+    btn.disabled = true;
+
+    try {
+
+        // Show ad
+        await show_11375484();
+
+        // IMPORTANT:
+        // Use URLSearchParams instead of application/json.
+        // This avoids the browser CORS preflight that was
+        // causing the fetch error with Google Apps Script.
+        const body = new URLSearchParams();
+
+        body.append("userId", String(user.id));
+        body.append("name", String(user.first_name || "User"));
+
+        const r = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type":
+                    "application/x-www-form-urlencoded;charset=UTF-8"
+            },
+            body: body.toString()
+        });
+
+        if (!r.ok) {
+            throw new Error("HTTP " + r.status);
+        }
+
+        const data = await r.json();
+
+        if (!data.success) {
+            showMessage(data.error || "Reward was not added.");
+            document.getElementById("balance").innerText =
+                "Balance: " + Number(data.balance || 0);
+            return;
+        }
+
+        document.getElementById("balance").innerText =
+            "Balance: " + Number(data.balance || 0);
+
+        showMessage(
+            "Reward added successfully!\n+" +
+            Number(data.amount || 1)
+        );
+
+    } catch (err) {
+        console.error("POST error:", err);
+        showMessage(
+            "Fetch error.\nPlease try again.\n\n" + err.message
+        );
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+loadBalance();
 </script>
 
 </body>
