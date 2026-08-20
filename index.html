@@ -27,7 +27,7 @@
 <section class="buttons">
 <button class="menuBtn" id="dailyBtn" onclick="dailyBonus()">🎁 Daily Bonus</button>
 <button class="menuBtn" id="rewardBtn" onclick="startReward()">▶ Watch Ads</button>
-<button class="menuBtn" onclick="showComing('Referral')">👥 Referral</button>
+<button class="menuBtn" onclick="openReferral()">👥 Referral</button>
 <button class="menuBtn" onclick="showComing('Deposit')">💵 Deposit</button>
 <button class="menuBtn" onclick="showComing('Withdraw')">💸 Withdraw</button>
 </section>
@@ -38,10 +38,20 @@
 </section>
 </main>
 
+<div id="refModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:30;align-items:center;justify-content:center;padding:20px">
+  <div style="width:100%;max-width:430px;background:#202a3a;border-radius:26px;padding:25px;text-align:center">
+    <h2 style="color:#20d467;margin:0 0 12px">👥 Referral</h2>
+    <p style="color:#aeb7c5">Invite friends and earn <b style="color:#20d467">3 Coins</b> for each successful referral.</p>
+    <div id="refCount" style="font-size:22px;font-weight:bold;margin:18px 0">Referrals: 0</div>
+    <button class="menuBtn" style="width:100%;min-height:60px;font-size:20px" onclick="shareReferral()">📤 Invite Friends</button>
+    <button class="menuBtn" style="width:100%;min-height:55px;font-size:18px;margin-top:12px;background:#39485d" onclick="closeReferral()">Close</button>
+  </div>
+</div>
+
 <nav class="bottomNav">
 <div class="navItem">🏠 Home</div>
 <div class="navItem" onclick="startReward()">💰 Earn</div>
-<div class="navItem" onclick="showComing('Referral')">👥 Referral</div>
+<div class="navItem" onclick="openReferral()">👥 Referral</div>
 <div class="navItem" onclick="showComing('Profile')">👤 Profile</div>
 </nav>
 </div>
@@ -129,6 +139,33 @@ async function dailyBonus(){
   console.error(e);
   btn.disabled=false;btn.innerText="🎁 Daily Bonus";
   msg("Daily Bonus error.\n\n"+e.message);
+ }
+}
+
+
+async function openReferral(){
+ if(!user||!user.id){msg("Telegram user information not found.");return}
+ document.getElementById("refModal").style.display="flex";
+ try{
+  const url=API_URL+"?action=referral&userId="+encodeURIComponent(String(user.id))+"&_="+Date.now();
+  const r=await fetch(url,{cache:"no-store"});
+  const d=await r.json();
+  if(d.success) document.getElementById("refCount").innerText="Referrals: "+Number(d.referrals||0);
+ }catch(e){console.error(e)}
+}
+
+function closeReferral(){
+ document.getElementById("refModal").style.display="none";
+}
+
+async function shareReferral(){
+ const botUsername="tetlibot";
+ const link="https://t.me/"+botUsername+"?start=ref_"+encodeURIComponent(String(user.id));
+ const text="Join Earnnest Bot and earn Coins! 🎁";
+ if(tg&&tg.openTelegramLink){
+   tg.openTelegramLink("https://t.me/share/url?url="+encodeURIComponent(link)+"&text="+encodeURIComponent(text));
+ }else{
+   try{await navigator.clipboard.writeText(link);msg("Referral link copied!")}catch(e){msg(link)}
  }
 }
 
