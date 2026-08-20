@@ -3,32 +3,208 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>My Cash Bot</title>
+<title>Earnnest Bot</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="//libtl.com/sdk.js" data-zone="11375484" data-sdk="show_11375484"></script>
+
 <style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;color:#fff;background:radial-gradient(circle at 50% 0%,#123b31 0,transparent 32%),linear-gradient(180deg,#06101d,#091728 55%,#07111f)}.app{max-width:520px;min-height:100vh;margin:auto;padding:25px 18px 30px}.top{display:flex;justify-content:space-between;align-items:center}.brand{display:flex;align-items:center;gap:10px}.logo{width:43px;height:43px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#35f58b,#0a8b4e);font-size:24px;font-weight:bold;box-shadow:0 0 25px #20df7955}.brand h1{font-size:20px;margin:0}.brand p{font-size:11px;color:#91a4bd;margin:4px 0}.status{font-size:11px;font-weight:bold;color:#20df79;background:#20df7918;border:1px solid #20df7933;padding:7px 10px;border-radius:20px}.hero{text-align:center;margin:30px 0 25px}.coin{width:90px;height:90px;margin:auto auto 16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:bold;background:radial-gradient(circle at 35% 30%,#62ffa5,#14a85e 60%,#07663a);border:5px solid #74ffad88;box-shadow:0 0 0 9px #20df7912,0 0 40px #20df794d}.hero h2{font-size:29px;margin:0 0 7px}.hero h2 span{color:#20df79}.hero p{color:#91a4bd;font-size:14px;margin:0}.balance{position:relative;overflow:hidden;background:linear-gradient(145deg,#12243cf5,#0a192bf5);border:1px solid #668bb433;border-radius:24px;padding:24px;box-shadow:0 18px 45px #0004}.label{font-size:12px;letter-spacing:1.5px;color:#91a4bd;font-weight:bold}.amount{font-size:50px;font-weight:800;margin:7px 0}.coins{display:inline-block;color:#20df79;background:#20df7914;border:1px solid #20df7933;padding:7px 13px;border-radius:20px;font-size:13px;font-weight:bold}.stats{display:grid;grid-template-columns:1fr 1fr;margin-top:14px;background:#0e1c30e8;border:1px solid #668bb42e;border-radius:20px;overflow:hidden}.stat{padding:18px 16px}.stat+ .stat{border-left:1px solid #668bb42e}.stat small{display:block;color:#91a4bd;font-size:10px;text-transform:uppercase;letter-spacing:.7px}.stat strong{display:block;color:#20df79;font-size:20px;margin-top:6px}.action{margin-top:17px}button{width:100%;padding:17px;border:0;border-radius:18px;font-size:18px;font-weight:800;color:#062015;background:linear-gradient(135deg,#2af184,#12c66a);box-shadow:0 10px 30px #20df7940}button:disabled{opacity:.55;box-shadow:none}.hint{text-align:center;color:#91a4bd;font-size:12px;margin:10px}.hint b{color:#20df79}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}.feature{padding:15px 7px;text-align:center;background:#0e1c30d9;border:1px solid #668bb42e;border-radius:16px}.feature .icon{font-size:20px;margin-bottom:6px}.feature strong{display:block;font-size:11px}.feature span{display:block;color:#91a4bd;font-size:9px;margin-top:4px}.footer{text-align:center;color:#60748e;font-size:10px;margin-top:20px}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:#0b1222;color:#fff}
+body{padding-bottom:78px}
+.app{width:100%;max-width:560px;margin:auto;min-height:100vh;background:#0b1222}
+.header{text-align:center;padding:27px 18px 20px;background:#202a3a;border-bottom:4px solid #20d467}
+.logoTitle{font-size:35px;font-weight:800;color:#20d467;line-height:1.1}
+.logoTitle .money{font-size:38px;margin-right:7px}
+.welcome{font-size:27px;color:#d7dce5;margin-top:20px}
+.userId{font-size:20px;color:#aeb7c5;margin-top:7px}
+.main{padding:42px 34px 28px}
+.balanceCard{background:#202a3a;border-radius:30px;padding:43px 20px 46px;text-align:center;box-shadow:0 14px 35px rgba(0,0,0,.25)}
+.balanceTitle{font-size:45px;font-weight:800;margin-bottom:28px}
+.balanceValue{font-size:60px;font-weight:800;color:#20d467;line-height:1}
+.balanceUnit{font-size:28px;color:#20d467;font-weight:700;margin-left:5px}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:43px}
+.menuBtn{min-height:108px;border:0;border-radius:27px;background:#20c963;color:#fff;font-size:28px;font-weight:500;box-shadow:none;padding:12px 8px}
+.menuBtn:active{transform:scale(.98)}
+.menuBtn .ico{display:inline-block;margin-right:8px}
+.menuBtn:disabled{opacity:.55}
+.tasks{margin-top:42px;background:#202a3a;border-radius:30px;padding:38px 38px;min-height:180px}
+.tasks h2{margin:0;color:#20d467;font-size:45px}
+.tasks p{color:#aeb7c5;font-size:18px;margin-top:12px}
+.bottomNav{position:fixed;left:0;right:0;bottom:0;height:78px;background:#202a3a;border-top:1px solid #394456;display:flex;justify-content:space-around;align-items:center;z-index:10}
+.navItem{font-size:22px;color:#fff;text-align:center;min-width:24%;white-space:nowrap}
+.navItem span{display:inline-block;margin-right:4px}
+@media(max-width:390px){
+ .logoTitle{font-size:29px}.welcome{font-size:23px}.userId{font-size:17px}
+ .main{padding:30px 18px 24px}.balanceTitle{font-size:38px}.balanceValue{font-size:52px}
+ .buttons{gap:16px}.menuBtn{font-size:22px;min-height:90px}.tasks h2{font-size:38px}.navItem{font-size:17px}
+}
 </style>
 </head>
+
 <body>
 <div class="app">
-<div class="top"><div class="brand"><div class="logo">$</div><div><h1>My Cash Bot</h1><p>Reward dashboard</p></div></div><div class="status">● ONLINE</div></div>
-<div class="hero"><div class="coin">$</div><h2>Welcome <span id="userName">Back!</span> 👋</h2><p>Watch ads and collect coins</p></div>
-<div class="balance"><div class="label">YOUR BALANCE</div><div class="amount" id="balance">0</div><div class="coins">🪙 Coins</div></div>
-<div class="stats"><div class="stat"><small>Total Earned</small><strong id="earned">0</strong></div><div class="stat"><small>Reward Status</small><strong id="rewardStatus">Ready</strong></div></div>
-<div class="action"><button id="rewardBtn" onclick="startReward()">▶ Watch Reward Ad</button><div class="hint">Watch an ad and earn <b>+1 coin</b></div></div>
-<div class="features"><div class="feature"><div class="icon">🛡️</div><strong>Secure</strong><span>Protected</span></div><div class="feature"><div class="icon">🎁</div><strong>Rewards</strong><span>Earn coins</span></div><div class="feature"><div class="icon">⚡</div><strong>Instant</strong><span>Live balance</span></div></div>
-<div class="footer">My Cash Bot • Reward System</div>
+
+<header class="header">
+  <div class="logoTitle"><span class="money">💰</span>Earnnest Bot</div>
+  <div class="welcome">Welcome, <span id="userName">User</span></div>
+  <div class="userId">User ID: <span id="userId">—</span></div>
+</header>
+
+<main class="main">
+  <section class="balanceCard">
+    <div class="balanceTitle">Balance</div>
+    <div><span id="balance" class="balanceValue">0</span><span class="balanceUnit">Coins</span></div>
+  </section>
+
+  <section class="buttons">
+    <button class="menuBtn" onclick="dailyBonus()">🎁 Daily Bonus</button>
+    <button class="menuBtn" id="rewardBtn" onclick="startReward()">▶ Watch Ads</button>
+    <button class="menuBtn" onclick="showComing('Referral')">👥 Referral</button>
+    <button class="menuBtn" onclick="showComing('Deposit')">💵 Deposit</button>
+    <button class="menuBtn" onclick="showComing('Withdraw')">💸 Withdraw</button>
+  </section>
+
+  <section class="tasks">
+    <h2>Tasks</h2>
+    <p>Complete tasks and earn more coins.</p>
+  </section>
+</main>
+
+<nav class="bottomNav">
+  <div class="navItem">🏠 Home</div>
+  <div class="navItem" onclick="startReward">💰 Earn</div>
+  <div class="navItem" onclick="showComing('Referral')">👥 Referral</div>
+  <div class="navItem" onclick="showComing('Profile')">👤 Profile</div>
+</nav>
+
 </div>
+
 <script>
-const tg=window.Telegram.WebApp;tg.expand();const user=tg.initDataUnsafe&&tg.initDataUnsafe.user;
+const tg=window.Telegram.WebApp;
+tg.expand();
+
+const user=tg.initDataUnsafe && tg.initDataUnsafe.user;
+
 const API_URL="https://script.google.com/macros/s/AKfycbz5iVhB-b0kDLlDCshkTdWRENjTBLyPOG3Xjvo2GMf3pvImzNHiGtGNhNiUA5yoa6AwLw/exec";
-let timer=null;
-function showMessage(m){if(tg&&tg.showAlert)tg.showAlert(m);else alert(m)}
-function setBalance(v){v=Number(v||0);document.getElementById("balance").innerText=v;document.getElementById("earned").innerText=v}
-async function loadBalance(){if(!user||!user.id)return;document.getElementById("userName").innerText=user.first_name||"Back!";try{const r=await fetch(API_URL+"?userId="+encodeURIComponent(user.id)+"&_="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);const d=await r.json();if(!d.success)throw Error(d.error||"Balance fetch failed");setBalance(d.balance)}catch(e){console.error(e)}}
-function cooldown(sec){clearInterval(timer);const b=document.getElementById("rewardBtn"),s=document.getElementById("rewardStatus");let n=Number(sec);b.disabled=true;s.innerText=n+"s";b.innerText="Please wait "+n+"s";timer=setInterval(()=>{n--;if(n<=0){clearInterval(timer);b.disabled=false;b.innerText="▶ Watch Reward Ad";s.innerText="Ready"}else{s.innerText=n+"s";b.innerText="Please wait "+n+"s"}},1000)}
-async function startReward(){if(!user||!user.id){showMessage("Telegram user information not found.");return}const b=document.getElementById("rewardBtn"),s=document.getElementById("rewardStatus");b.disabled=true;b.innerText="Loading Ad...";s.innerText="Loading";try{await show_11375484();b.innerText="Adding Reward...";const u=API_URL+"?action=reward&userId="+encodeURIComponent(user.id)+"&name="+encodeURIComponent(user.first_name||"User")+"&_="+Date.now();const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);const d=await r.json();setBalance(d.balance);if(!d.success){showMessage(d.error||"Reward was not added.");const m=String(d.error||"").match(/(\d+)\s*seconds?/i);m?cooldown(m[1]):(b.disabled=false,b.innerText="▶ Watch Reward Ad",s.innerText="Ready");return}showMessage("Reward added successfully!\n+"+Number(d.amount||1)+" coin");cooldown(30)}catch(e){console.error(e);b.disabled=false;b.innerText="▶ Watch Reward Ad";s.innerText="Ready";showMessage("Something went wrong.\n\n"+e.message)}}
+
+let cooldownTimer=null;
+
+function msg(text){
+  if(tg && tg.showAlert) tg.showAlert(text);
+  else alert(text);
+}
+
+function setBalance(value){
+  document.getElementById("balance").innerText=Number(value||0);
+}
+
+async function loadBalance(){
+  if(!user || !user.id) return;
+
+  document.getElementById("userName").innerText=user.first_name||"User";
+  document.getElementById("userId").innerText=String(user.id);
+
+  try{
+    const url=API_URL+"?userId="+encodeURIComponent(String(user.id))+"&_="+Date.now();
+    const r=await fetch(url,{method:"GET",redirect:"follow",cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+
+    const data=await r.json();
+    if(!data.success) throw new Error(data.error||"Balance fetch failed");
+
+    setBalance(data.balance);
+  }catch(e){
+    console.error("Balance error:",e);
+  }
+}
+
+function startCooldown(seconds){
+  clearInterval(cooldownTimer);
+
+  const btn=document.getElementById("rewardBtn");
+  let left=Number(seconds)||30;
+
+  btn.disabled=true;
+  btn.innerText="Please wait "+left+"s";
+
+  cooldownTimer=setInterval(function(){
+    left--;
+
+    if(left<=0){
+      clearInterval(cooldownTimer);
+      btn.disabled=false;
+      btn.innerText="▶ Watch Ads";
+    }else{
+      btn.innerText="Please wait "+left+"s";
+    }
+  },1000);
+}
+
+async function startReward(){
+  if(!user || !user.id){
+    msg("Telegram user information not found.");
+    return;
+  }
+
+  const btn=document.getElementById("rewardBtn");
+  btn.disabled=true;
+  btn.innerText="Loading Ad...";
+
+  try{
+    await show_11375484();
+
+    btn.innerText="Adding Reward...";
+
+    const url=API_URL+
+      "?action=reward"+
+      "&userId="+encodeURIComponent(String(user.id))+
+      "&name="+encodeURIComponent(String(user.first_name||"User"))+
+      "&_="+Date.now();
+
+    const r=await fetch(url,{
+      method:"GET",
+      redirect:"follow",
+      cache:"no-store"
+    });
+
+    if(!r.ok) throw new Error("HTTP "+r.status);
+
+    const data=await r.json();
+
+    if(data.balance!==undefined) setBalance(data.balance);
+
+    if(!data.success){
+      msg(data.error||"Reward was not added.");
+
+      const match=String(data.error||"").match(/(\d+)\s*seconds?/i);
+
+      if(match) startCooldown(Number(match[1]));
+      else{
+        btn.disabled=false;
+        btn.innerText="▶ Watch Ads";
+      }
+      return;
+    }
+
+    msg("Reward added successfully!\n+"+Number(data.amount||1)+" Coin");
+    startCooldown(30);
+
+  }catch(e){
+    console.error("Reward error:",e);
+    btn.disabled=false;
+    btn.innerText="▶ Watch Ads";
+    msg("Fetch error.\n\n"+e.message);
+  }
+}
+
+function dailyBonus(){
+  msg("Daily Bonus is coming soon.");
+}
+
+function showComing(name){
+  msg(name+" feature is coming soon.");
+}
+
 loadBalance();
 </script>
 </body>
