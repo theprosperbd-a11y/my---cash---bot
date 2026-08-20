@@ -4,178 +4,100 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Cash Bot</title>
-
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <script src="//libtl.com/sdk.js" data-zone="11375484" data-sdk="show_11375484"></script>
-
 <style>
-body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#1f2937;
-    color:#fff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-}
-.container{
-    text-align:center;
-}
-button{
-    padding:12px 25px;
-    font-size:18px;
-    border:none;
-    border-radius:8px;
-    background:#22c55e;
-    color:#fff;
-}
-button:disabled{
-    opacity:.6;
-}
+body{margin:0;font-family:Arial,sans-serif;background:#1f2937;color:#fff;display:flex;justify-content:center;align-items:center;height:100vh}
+.container{text-align:center}
+button{padding:12px 25px;font-size:18px;border:none;border-radius:8px;background:#22c55e;color:#fff}
+button:disabled{opacity:.6}
 </style>
 </head>
 <body>
-
 <div class="container">
-    <h2>My Cash Bot</h2>
-    <p id="balance">Balance: 0</p>
-    <button id="rewardBtn" onclick="startReward()">Watch Reward Ad</button>
+<h2>My Cash Bot</h2>
+<p id="balance">Balance: 0</p>
+<button id="rewardBtn" onclick="startReward()">Watch Reward Ad</button>
 </div>
 
 <script>
 const tg = window.Telegram.WebApp;
 tg.expand();
-
 const user = tg.initDataUnsafe && tg.initDataUnsafe.user;
 
-// IMPORTANT: keep this URL as the current deployed Web App URL.
 const API_URL =
 "https://script.google.com/macros/s/AKfycbz5iVhB-b0kDLlDCshkTdWRENjTBLyPOG3Xjvo2GMf3pvImzNHiGtGNhNiUA5yoa6AwLw/exec";
 
-
-// =========================
-// SHOW MESSAGE
-// =========================
 function showMessage(message){
-    if (tg && tg.showAlert) {
-        tg.showAlert(message);
-    } else {
-        alert(message);
-    }
+  if(tg && tg.showAlert) tg.showAlert(message);
+  else alert(message);
 }
 
-
-// =========================
-// LOAD BALANCE
-// =========================
 async function loadBalance(){
-    if (!user || !user.id) {
-        document.getElementById("balance").innerText =
-            "Balance: 0";
-        return;
-    }
+  if(!user || !user.id) return;
 
-    try {
-        const url =
-            API_URL + "?userId=" +
-            encodeURIComponent(String(user.id));
+  try{
+    const url = API_URL +
+      "?userId=" + encodeURIComponent(String(user.id)) +
+      "&_=" + Date.now();
 
-        const r = await fetch(url, {
-            method: "GET",
-            cache: "no-store"
-        });
+    const r = await fetch(url,{method:"GET",redirect:"follow",cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP " + r.status);
 
-        if (!r.ok) {
-            throw new Error("HTTP " + r.status);
-        }
+    const data = await r.json();
+    if(!data.success) throw new Error(data.error || "Balance fetch failed");
 
-        const data = await r.json();
+    document.getElementById("balance").innerText =
+      "Balance: " + Number(data.balance || 0);
 
-        if (!data.success) {
-            throw new Error(data.error || "Balance fetch failed");
-        }
-
-        document.getElementById("balance").innerText =
-            "Balance: " + Number(data.balance || 0);
-
-    } catch (err) {
-        console.error("GET error:", err);
-        document.getElementById("balance").innerText =
-            "Balance: 0";
-    }
+  }catch(err){
+    console.error("Balance error:",err);
+  }
 }
 
-
-// =========================
-// REWARD AD
-// =========================
 async function startReward(){
+  if(!user || !user.id){
+    showMessage("Telegram user information not found.");
+    return;
+  }
 
-    if (!user || !user.id) {
-        showMessage("Telegram user information not found.");
-        return;
+  const btn = document.getElementById("rewardBtn");
+  btn.disabled = true;
+
+  try{
+    await show_11375484();
+
+    // GET is used intentionally to avoid Google Apps Script POST CORS/preflight errors.
+    const url = API_URL +
+      "?action=reward" +
+      "&userId=" + encodeURIComponent(String(user.id)) +
+      "&name=" + encodeURIComponent(String(user.first_name || "User")) +
+      "&_=" + Date.now();
+
+    const r = await fetch(url,{method:"GET",redirect:"follow",cache:"no-store"});
+    if(!r.ok) throw new Error("HTTP " + r.status);
+
+    const data = await r.json();
+
+    document.getElementById("balance").innerText =
+      "Balance: " + Number(data.balance || 0);
+
+    if(!data.success){
+      showMessage(data.error || "Reward was not added.");
+      return;
     }
 
-    const btn = document.getElementById("rewardBtn");
-    btn.disabled = true;
+    showMessage("Reward added successfully!\n+" + Number(data.amount || 1));
 
-    try {
-
-        // Show ad
-        await show_11375484();
-
-        // IMPORTANT:
-        // Use URLSearchParams instead of application/json.
-        // This avoids the browser CORS preflight that was
-        // causing the fetch error with Google Apps Script.
-        const body = new URLSearchParams();
-
-        body.append("userId", String(user.id));
-        body.append("name", String(user.first_name || "User"));
-
-        const r = await fetch(API_URL, {
-            method: "POST",
-            headers: {
-                "Content-Type":
-                    "application/x-www-form-urlencoded;charset=UTF-8"
-            },
-            body: body.toString()
-        });
-
-        if (!r.ok) {
-            throw new Error("HTTP " + r.status);
-        }
-
-        const data = await r.json();
-
-        if (!data.success) {
-            showMessage(data.error || "Reward was not added.");
-            document.getElementById("balance").innerText =
-                "Balance: " + Number(data.balance || 0);
-            return;
-        }
-
-        document.getElementById("balance").innerText =
-            "Balance: " + Number(data.balance || 0);
-
-        showMessage(
-            "Reward added successfully!\n+" +
-            Number(data.amount || 1)
-        );
-
-    } catch (err) {
-        console.error("POST error:", err);
-        showMessage(
-            "Fetch error.\nPlease try again.\n\n" + err.message
-        );
-    } finally {
-        btn.disabled = false;
-    }
+  }catch(err){
+    console.error("Reward error:",err);
+    showMessage("Fetch error.\n\n" + err.message);
+  }finally{
+    btn.disabled = false;
+  }
 }
 
 loadBalance();
 </script>
-
 </body>
 </html>
