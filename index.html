@@ -2,502 +2,138 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"
-  >
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
   <title>Earnnest Bot</title>
 
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script
-    src="//libtl.com/sdk.js"
-    data-zone="11375484"
-    data-sdk="show_11375484"
-  ></script>
+  <script src="//libtl.com/sdk.js" data-zone="11375484" data-sdk="show_11375484"></script>
 
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: #0b1222;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      padding-bottom: 82px;
-    }
-
-    button,
-    input {
-      font-family: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .app {
-      max-width: 560px;
-      margin: auto;
-      min-height: 100vh;
-    }
-
-    .header {
-      text-align: center;
-      padding: 25px 15px 20px;
-      background: #202a3a;
-      border-bottom: 4px solid #20d467;
-    }
-
-    .logo {
-      font-size: 34px;
-      font-weight: 800;
-      color: #20d467;
-    }
-
-    .welcome {
-      font-size: 25px;
-      margin-top: 18px;
-    }
-
-    .uid {
-      font-size: 17px;
-      color: #aeb7c5;
-      margin-top: 6px;
-    }
-
-    .main {
-      padding: 30px 22px;
-    }
-
-    .card,
-    .tasks {
-      background: #202a3a;
-      border-radius: 28px;
-      padding: 28px 18px;
-      text-align: center;
-    }
-
-    .title {
-      font-size: 40px;
-      font-weight: 800;
-    }
-
-    .balance {
-      font-size: 58px;
-      color: #20d467;
-      font-weight: 800;
-      margin-top: 18px;
-      display: inline-block;
-    }
-
-    .coins {
-      font-size: 24px;
-      color: #20d467;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 28px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 22px;
-      background: #20c963;
-      color: white;
-      font-size: 20px;
-      min-height: 82px;
-      font-weight: 600;
-      padding: 12px;
-    }
-
-    button:disabled {
-      opacity: 0.55;
-      cursor: not-allowed;
-    }
-
-    .tasks {
-      margin-top: 28px;
-      text-align: left;
-    }
-
-    .tasks h2 {
-      margin: 0;
-      color: #20d467;
-      font-size: 34px;
-    }
-
-    .tasks p {
-      color: #aeb7c5;
-    }
-
-    .nav {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 78px;
-      background: #202a3a;
-      border-top: 1px solid #394456;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      z-index: 10;
-    }
-
-    .nav div {
-      font-size: 17px;
-      cursor: pointer;
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.72);
-      z-index: 20;
-      padding: 20px;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modalBox {
-      width: 100%;
-      max-width: 500px;
-      max-height: 90vh;
-      overflow-y: auto;
-      background: #202a3a;
-      border-radius: 24px;
-      padding: 25px;
-    }
-
-    .modalBox h2 {
-      color: #20d467;
-      margin-top: 0;
-      font-size: 32px;
-    }
-
-    .method {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .method button {
-      min-height: 58px;
-      font-size: 17px;
-    }
-
-    .method button.selected {
-      outline: 3px solid #fff;
-      background: #159c4c;
-    }
-
-    .input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 0;
-      margin: 9px 0;
-      font-size: 17px;
-      background: #0b1222;
-      color: #fff;
-      outline: none;
-    }
-
-    .input::placeholder {
-      color: #7f8da2;
-    }
-
-    .small {
-      color: #aeb7c5;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .accountBox {
-      background: #0b1222;
-      color: #20d467;
-      border-radius: 12px;
-      padding: 14px;
-      margin: 15px 0;
-      word-break: break-word;
-    }
-
-    .close {
-      background: #475569;
-      margin-top: 10px;
-      width: 100%;
-    }
-
-    .refLink {
-      background: #0b1222;
-      border-radius: 12px;
-      padding: 12px;
-      word-break: break-all;
-      margin: 12px 0;
-      color: #20d467;
-      line-height: 1.5;
-    }
-
-    .copy {
-      min-height: 52px;
-      width: 100%;
-      font-size: 17px;
-    }
-
-    .status {
-      color: #20d467;
-      text-align: center;
-      margin-top: 12px;
-      min-height: 20px;
-      font-size: 13px;
-    }
-
-    @media (max-width: 380px) {
-      .main {
-        padding: 22px 15px;
-      }
-
-      .grid {
-        gap: 12px;
-      }
-
-      button {
-        font-size: 17px;
-      }
-
-      .title {
-        font-size: 34px;
-      }
-
-      .balance {
-        font-size: 50px;
-      }
+    *{box-sizing:border-box}
+    body{margin:0;background:#0b1222;color:#fff;font-family:Arial,sans-serif;padding-bottom:82px}
+    button,input{font-family:inherit}
+    button{cursor:pointer}
+    .app{max-width:560px;margin:auto;min-height:100vh}
+    .header{text-align:center;padding:25px 15px 20px;background:#202a3a;border-bottom:4px solid #20d467}
+    .logo{font-size:34px;font-weight:800;color:#20d467}
+    .welcome{font-size:25px;margin-top:18px}
+    .uid{font-size:17px;color:#aeb7c5;margin-top:6px}
+    .main{padding:30px 22px}
+    .card,.tasks{background:#202a3a;border-radius:28px;padding:28px 18px;text-align:center}
+    .title{font-size:40px;font-weight:800}
+    .balance{font-size:58px;color:#20d467;font-weight:800;margin-top:18px;display:inline-block}
+    .coins{font-size:24px;color:#20d467}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px}
+    button{border:0;border-radius:22px;background:#20c963;color:white;font-size:20px;min-height:82px;font-weight:600;padding:12px}
+    button:disabled{opacity:.55;cursor:not-allowed}
+    .tasks{margin-top:28px;text-align:left}
+    .tasks h2{margin:0;color:#20d467;font-size:34px}
+    .tasks p{color:#aeb7c5}
+    .nav{position:fixed;bottom:0;left:0;right:0;height:78px;background:#202a3a;border-top:1px solid #394456;display:flex;justify-content:space-around;align-items:center;z-index:10}
+    .nav div{font-size:17px;cursor:pointer}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:20;padding:20px;align-items:center;justify-content:center}
+    .modalBox{width:100%;max-width:500px;max-height:90vh;overflow-y:auto;background:#202a3a;border-radius:24px;padding:25px}
+    .modalBox h2{color:#20d467;margin-top:0;font-size:32px}
+    .method{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+    .method button{min-height:58px;font-size:17px}
+    .method button.selected{outline:3px solid #fff;background:#159c4c}
+    .input{width:100%;padding:14px;border-radius:12px;border:0;margin:9px 0;font-size:17px;background:#0b1222;color:#fff;outline:none}
+    .input::placeholder{color:#7f8da2}
+    .small{color:#aeb7c5;font-size:14px;line-height:1.5}
+    .accountBox{background:#0b1222;color:#20d467;border-radius:12px;padding:14px;margin:15px 0;word-break:break-word}
+    .close{background:#475569;margin-top:10px;width:100%}
+    .refLink{background:#0b1222;border-radius:12px;padding:12px;word-break:break-all;margin:12px 0;color:#20d467;line-height:1.5}
+    .copy{min-height:52px;width:100%;font-size:17px}
+    .status{color:#20d467;text-align:center;margin-top:12px;min-height:20px;font-size:13px}
+    @media(max-width:380px){
+      .main{padding:22px 15px}.grid{gap:12px}button{font-size:17px}.title{font-size:34px}.balance{font-size:50px}
     }
   </style>
 </head>
 
 <body>
   <div class="app">
-
     <header class="header">
       <div class="logo">💰 Earnnest Bot</div>
-
-      <div class="welcome">
-        Welcome,
-        <span id="userName">User</span>
-      </div>
-
-      <div class="uid">
-        User ID:
-        <span id="userId">—</span>
-      </div>
+      <div class="welcome">Welcome, <span id="userName">User</span></div>
+      <div class="uid">User ID: <span id="userId">—</span></div>
     </header>
 
     <main class="main">
-
       <div class="card">
         <div class="title">Balance</div>
-
-        <div>
-          <span id="balance" class="balance">0</span>
-          <span class="coins">Coins</span>
-        </div>
+        <div><span id="balance" class="balance">0</span> <span class="coins">Coins</span></div>
       </div>
 
       <div class="grid">
-        <button
-          id="dailyBtn"
-          onclick="dailyBonus()"
-        >
-          🎁 Daily Bonus
-        </button>
-
-        <button
-          id="rewardBtn"
-          onclick="startReward()"
-        >
-          ▶ Watch Ads
-        </button>
-
-        <button onclick="openDeposit()">
-          💵 Deposit
-        </button>
-
-        <button onclick="coming('Withdraw')">
-          💸 Withdraw
-        </button>
-
-        <button onclick="openReferral()">
-          👥 Referral
-        </button>
-
-        <button onclick="coming('Profile')">
-          👤 Profile
-        </button>
+        <button id="dailyBtn" onclick="dailyBonus()">🎁 Daily Bonus</button>
+        <button id="rewardBtn" onclick="startReward()">▶ Watch Ads</button>
+        <button onclick="openDeposit()">💵 Deposit</button>
+        <button onclick="coming('Withdraw')">💸 Withdraw</button>
+        <button onclick="openReferral()">👥 Referral</button>
+        <button onclick="coming('Profile')">👤 Profile</button>
       </div>
 
       <div class="tasks">
         <h2>Tasks</h2>
-        <p>
-          Complete tasks and earn more coins.
-        </p>
+        <p>Complete tasks and earn more coins.</p>
       </div>
-
     </main>
 
     <nav class="nav">
-      <div onclick="scrollTopPage()">
-        🏠 Home
-      </div>
-
-      <div onclick="startReward()">
-        💰 Earn
-      </div>
-
-      <div onclick="openDeposit()">
-        💵 Deposit
-      </div>
-
-      <div onclick="coming('Profile')">
-        👤 Profile
-      </div>
+      <div onclick="scrollTopPage()">🏠 Home</div>
+      <div onclick="startReward()">💰 Earn</div>
+      <div onclick="openDeposit()">💵 Deposit</div>
+      <div onclick="coming('Profile')">👤 Profile</div>
     </nav>
-
   </div>
 
-  <!-- ======================================================
-       DEPOSIT MODAL
-       ====================================================== -->
-
-  <div
-    class="modal"
-    id="depositModal"
-  >
+  <div class="modal" id="depositModal">
     <div class="modalBox">
-
       <h2>💵 Deposit</h2>
-
-      <div class="small">
-        Minimum ৳100 • Maximum ৳5000
-      </div>
-
-      <div
-        class="method"
-        id="methods"
-      >
-        <div class="small">
-          Loading payment methods...
-        </div>
-      </div>
-
-      <div
-        id="accountBox"
-        class="accountBox"
-      >
-        Select a payment method.
-      </div>
-
-      <input
-        id="depAmount"
-        class="input"
-        type="number"
-        min="100"
-        max="5000"
-        placeholder="Amount (100 - 5000)"
-      >
-
-      <input
-        id="depTxid"
-        class="input"
-        type="text"
-        placeholder="Transaction ID"
-      >
-
-      <button
-        id="depSubmit"
-        onclick="submitDeposit()"
-      >
-        Submit Deposit
-      </button>
-
-      <button
-        class="close"
-        onclick="closeDeposit()"
-      >
-        Close
-      </button>
-
+      <div class="small">Minimum ৳100 • Maximum ৳5000</div>
+      <div class="method" id="methods"><div class="small">Loading payment methods...</div></div>
+      <div id="accountBox" class="accountBox">Select a payment method.</div>
+      <input id="depAmount" class="input" type="number" min="100" max="5000" placeholder="Amount (100 - 5000)">
+      <input id="depTxid" class="input" type="text" placeholder="Transaction ID">
+      <button id="depSubmit" onclick="submitDeposit()">Submit Deposit</button>
+      <button class="close" onclick="closeDeposit()">Close</button>
     </div>
   </div>
 
-  <!-- ======================================================
-       REFERRAL MODAL
-       ====================================================== -->
-
-  <div
-    class="modal"
-    id="referralModal"
-  >
+  <div class="modal" id="referralModal">
     <div class="modalBox">
-
       <h2>👥 Referral</h2>
-
-      <div class="small">
-        Your referral link:
-      </div>
-
-      <div
-        id="refLink"
-        class="refLink"
-      >
-        Loading...
-      </div>
-
-      <div
-        id="refStats"
-        class="small"
-      ></div>
-
-      <button
-        class="copy"
-        onclick="copyReferral()"
-      >
-        📋 Copy Referral Link
-      </button>
-
-      <button
-        class="close"
-        onclick="closeReferral()"
-      >
-        Close
-      </button>
-
+      <div class="small">Your referral link:</div>
+      <div id="refLink" class="refLink">Loading...</div>
+      <div id="refStats" class="small"></div>
+      <button class="copy" onclick="copyReferral()">📋 Copy Referral Link</button>
+      <button class="close" onclick="closeReferral()">Close</button>
     </div>
   </div>
 
   <script>
     const tg = window.Telegram.WebApp;
-
     tg.expand();
 
     const user =
-      tg.initDataUnsafe &&
-      tg.initDataUnsafe.user
+      tg.initDataUnsafe && tg.initDataUnsafe.user
         ? tg.initDataUnsafe.user
         : null;
 
     /*
-     * IMPORTANT:
-     * This must remain the SAME deployed Web App URL
-     * connected to the Code.gs above.
+     * Telegram Mini App startapp/referral parameter.
+     * Example:
+     * https://t.me/tetlibot/my_cash_bot?startapp=ref_8257039079
+     *
+     * Telegram exposes this as initDataUnsafe.start_param.
      */
+    const startParam =
+      tg.initDataUnsafe &&
+      tg.initDataUnsafe.start_param
+        ? String(tg.initDataUnsafe.start_param)
+        : "";
+
     const API_URL =
       "https://script.google.com/macros/s/AKfycbz5iVhB-b0kDLlDCshkTdWRENjTBLyPOG3Xjvo2GMf3pvImzNHiGtGNhNiUA5yoa6AwLw/exec";
 
@@ -505,186 +141,141 @@
     let selectedMethod = "";
     let referralLink = "";
     let rewardBusy = false;
+    let referralProcessed = false;
 
     function msg(text) {
       const message = String(text);
-
-      if (tg && typeof tg.showAlert === "function") {
-        tg.showAlert(message);
-      } else {
-        alert(message);
-      }
+      if (tg && typeof tg.showAlert === "function") tg.showAlert(message);
+      else alert(message);
     }
 
     function setBalance(value) {
       const amount = Number(value || 0);
-
       document.getElementById("balance").innerText =
-        Number.isFinite(amount)
-          ? amount
-          : 0;
+        Number.isFinite(amount) ? amount : 0;
     }
 
     function getUserId() {
       if (!user || !user.id) {
-        msg(
-          "Telegram user information not found. Please reopen the bot."
-        );
-
+        msg("Telegram user information not found. Please reopen the bot.");
         return "";
       }
-
       return String(user.id);
     }
 
     async function api(params) {
       const userId = getUserId();
 
-      /*
-       * For payment_methods the server does not require a user ID,
-       * but sending it when available makes every request consistent.
-       */
-      if (userId && !params.userId) {
-        params.userId = userId;
-      }
+      if (userId && !params.userId) params.userId = userId;
 
       const url = new URL(API_URL);
 
       Object.keys(params).forEach(function(key) {
         const value = params[key];
-
-        if (
-          value !== undefined &&
-          value !== null
-        ) {
-          url.searchParams.set(
-            key,
-            String(value)
-          );
+        if (value !== undefined && value !== null) {
+          url.searchParams.set(key, String(value));
         }
       });
 
-      url.searchParams.set(
-        "_",
-        String(Date.now())
-      );
+      url.searchParams.set("_", String(Date.now()));
 
-      const response = await fetch(
-        url.toString(),
-        {
-          method: "GET",
-          cache: "no-store"
+      const response = await fetch(url.toString(), {
+        method: "GET",
+        cache: "no-store"
+      });
+
+      if (!response.ok) throw new Error("HTTP " + response.status);
+
+      return await response.json();
+    }
+
+    /*
+     * Process a referral coming from Telegram's start_param.
+     * This is done BEFORE loading the normal balance.
+     */
+    async function processStartReferral() {
+      if (referralProcessed || !startParam) return;
+
+      referralProcessed = true;
+
+      if (!/^ref_/i.test(startParam)) return;
+
+      const referrerId = startParam.substring(4).trim();
+      const userId = getUserId();
+
+      if (!userId || !referrerId || userId === referrerId) return;
+
+      try {
+        const data = await api({
+          action: "referral",
+          userId: userId,
+          name: user.first_name || "User",
+          referrerId: referrerId
+        });
+
+        if (data.success) {
+          setBalance(data.balance);
+          msg(
+            "🎉 Referral bonus +" +
+            Number(data.amount || 2) +
+            " Coins"
+          );
         }
-      );
-
-      if (!response.ok) {
-        throw new Error(
-          "HTTP " + response.status
-        );
+      } catch (error) {
+        console.error("Referral processing error:", error);
       }
-
-      const data = await response.json();
-
-      return data;
     }
 
     async function loadBalance() {
       const userId = getUserId();
-
-      if (!userId) {
-        return;
-      }
+      if (!userId) return;
 
       document.getElementById("userName").innerText =
         user.first_name || "User";
-
-      document.getElementById("userId").innerText =
-        user.id;
+      document.getElementById("userId").innerText = user.id;
 
       try {
-        const data = await api({
-          userId: userId
-        });
+        await processStartReferral();
+
+        const data = await api({ userId: userId });
 
         if (!data.success) {
-          throw new Error(
-            data.error ||
-            "Balance could not be loaded."
-          );
+          throw new Error(data.error || "Balance could not be loaded.");
         }
 
         setBalance(data.balance);
-
       } catch (error) {
-        console.error(
-          "Balance error:",
-          error
-        );
+        console.error("Balance error:", error);
       }
     }
 
     async function dailyBonus() {
       const userId = getUserId();
+      if (!userId) return;
 
-      if (!userId) {
-        return;
-      }
-
-      const button =
-        document.getElementById(
-          "dailyBtn"
-        );
-
+      const button = document.getElementById("dailyBtn");
       button.disabled = true;
 
       try {
         const data = await api({
           action: "daily_bonus",
           userId: userId,
-          name:
-            user.first_name ||
-            "User"
+          name: user.first_name || "User"
         });
 
-        if (
-          data.balance !== undefined
-        ) {
-          setBalance(data.balance);
-        }
+        if (data.balance !== undefined) setBalance(data.balance);
 
         if (data.success) {
-          msg(
-            "🎉 Daily Bonus +" +
-            Number(data.amount || 5) +
-            " Coins"
-          );
-
-          button.innerText =
-            "✓ Bonus Claimed";
+          msg("🎉 Daily Bonus +" + Number(data.amount || 5) + " Coins");
+          button.innerText = "✓ Bonus Claimed";
         } else {
-          msg(
-            data.error ||
-            "Daily Bonus error."
-          );
-
-          button.innerText =
-            "🎁 Daily Bonus";
+          msg(data.error || "Daily Bonus error.");
+          button.innerText = "🎁 Daily Bonus";
         }
-
       } catch (error) {
-        console.error(
-          "Daily bonus error:",
-          error
-        );
-
-        button.innerText =
-          "🎁 Daily Bonus";
-
-        msg(
-          "Error: " +
-          error.message
-        );
-
+        console.error("Daily bonus error:", error);
+        button.innerText = "🎁 Daily Bonus";
+        msg("Error: " + error.message);
       } finally {
         button.disabled = false;
       }
@@ -692,368 +283,163 @@
 
     async function startReward() {
       const userId = getUserId();
+      if (!userId || rewardBusy) return;
 
-      if (!userId || rewardBusy) {
-        return;
-      }
-
-      const button =
-        document.getElementById(
-          "rewardBtn"
-        );
-
+      const button = document.getElementById("rewardBtn");
       rewardBusy = true;
       button.disabled = true;
-      button.innerText =
-        "⏳ Loading Ad...";
+      button.innerText = "⏳ Loading Ad...";
 
       try {
-        if (
-          typeof show_11375484 ===
-          "function"
-        ) {
+        if (typeof show_11375484 === "function") {
           await show_11375484();
         }
 
-        button.innerText =
-          "⏳ Checking Reward...";
+        button.innerText = "⏳ Checking Reward...";
 
         const data = await api({
           action: "reward",
           userId: userId,
-          name:
-            user.first_name ||
-            "User"
+          name: user.first_name || "User"
         });
 
-        if (
-          data.balance !== undefined
-        ) {
-          setBalance(data.balance);
-        }
+        if (data.balance !== undefined) setBalance(data.balance);
 
         if (data.success) {
-          /*
-           * Never show "undefined".
-           * Server reward is normally 1.
-           */
-          const amount =
-            Number(
-              data.amount
-            ) || 1;
-
-          msg(
-            "🎉 +" +
-            amount +
-            " Coin"
-          );
-
+          const amount = Number(data.amount) || 1;
+          msg("🎉 +" + amount + " Coin");
         } else {
-          msg(
-            data.error ||
-            "Reward error."
-          );
+          msg(data.error || "Reward error.");
         }
-
       } catch (error) {
-        console.error(
-          "Reward error:",
-          error
-        );
-
-        msg(
-          "Fetch error: " +
-          error.message
-        );
-
+        console.error("Reward error:", error);
+        msg("Fetch error: " + error.message);
       } finally {
         rewardBusy = false;
         button.disabled = false;
-        button.innerText =
-          "▶ Watch Ads";
+        button.innerText = "▶ Watch Ads";
       }
     }
 
-    /* ========================================================
-       DEPOSIT
-       ======================================================== */
-
     async function openDeposit() {
-      const modal =
-        document.getElementById(
-          "depositModal"
-        );
-
-      modal.style.display = "flex";
-
+      document.getElementById("depositModal").style.display = "flex";
       selectedMethod = "";
+      document.getElementById("accountBox").innerText = "Select a payment method.";
 
-      document.getElementById(
-        "accountBox"
-      ).innerText =
-        "Select a payment method.";
-
-      const box =
-        document.getElementById(
-          "methods"
-        );
-
-      box.innerHTML =
-        "<div class='small'>" +
-        "Loading payment methods..." +
-        "</div>";
+      const box = document.getElementById("methods");
+      box.innerHTML = "<div class='small'>Loading payment methods...</div>";
 
       try {
-        /*
-         * IMPORTANT:
-         * payment_methods is intentionally sent without
-         * depending on the generic user-ID check.
-         */
-        const data = await api({
-          action: "payment_methods"
-        });
+        const data = await api({ action: "payment_methods" });
 
-        if (!data.success) {
-          throw new Error(
-            data.error ||
-            "Could not load payment methods."
-          );
-        }
+        if (!data.success) throw new Error(data.error || "Could not load payment methods.");
 
-        methods =
-          data.methods || {};
-
+        methods = data.methods || {};
         renderMethods();
-
       } catch (error) {
-        console.error(
-          "Payment methods error:",
-          error
-        );
-
-        box.innerHTML =
-          "<div class='small'>" +
-          "Could not load payment methods." +
-          "</div>";
-
-        msg(
-          "Could not load payment methods: " +
-          error.message
-        );
+        console.error("Payment methods error:", error);
+        box.innerHTML = "<div class='small'>Could not load payment methods.</div>";
+        msg("Could not load payment methods: " + error.message);
       }
     }
 
     function renderMethods() {
-      const box =
-        document.getElementById(
-          "methods"
-        );
-
+      const box = document.getElementById("methods");
       box.innerHTML = "";
 
-      const names =
-        Object.keys(methods);
+      const names = Object.keys(methods);
 
       if (!names.length) {
-        box.innerHTML =
-          "<div class='small'>" +
-          "No payment method is active. " +
-          "Please contact admin." +
-          "</div>";
-
+        box.innerHTML = "<div class='small'>No payment method is active. Please contact admin.</div>";
         return;
       }
 
       names.forEach(function(method) {
-        const button =
-          document.createElement(
-            "button"
-          );
-
+        const button = document.createElement("button");
         button.type = "button";
         button.innerText = method;
-
-        button.onclick =
-          function() {
-            selectMethod(
-              method,
-              button
-            );
-          };
-
+        button.onclick = function() { selectMethod(method, button); };
         box.appendChild(button);
       });
     }
 
-    function selectMethod(
-      method,
-      button
-    ) {
+    function selectMethod(method, button) {
       selectedMethod = method;
 
-      document
-        .querySelectorAll(
-          ".method button"
-        )
-        .forEach(function(item) {
-          item.classList.remove(
-            "selected"
-          );
-        });
+      document.querySelectorAll(".method button").forEach(function(item) {
+        item.classList.remove("selected");
+      });
 
-      button.classList.add(
-        "selected"
-      );
+      button.classList.add("selected");
 
-      document.getElementById(
-        "accountBox"
-      ).innerText =
-        "Send payment to: " +
-        methods[method];
+      document.getElementById("accountBox").innerText =
+        "Send payment to: " + methods[method];
     }
 
     async function submitDeposit() {
       const userId = getUserId();
-
-      if (!userId) {
-        return;
-      }
+      if (!userId) return;
 
       if (!selectedMethod) {
-        msg(
-          "Select a payment method."
-        );
-
+        msg("Select a payment method.");
         return;
       }
 
-      const amount =
-        Number(
-          document.getElementById(
-            "depAmount"
-          ).value
-        );
+      const amount = Number(document.getElementById("depAmount").value);
+      const tx = document.getElementById("depTxid").value.trim();
 
-      const tx =
-        document.getElementById(
-          "depTxid"
-        ).value.trim();
-
-      if (
-        !Number.isFinite(amount) ||
-        amount < 100 ||
-        amount > 5000
-      ) {
-        msg(
-          "Amount must be between ৳100 and ৳5000."
-        );
-
+      if (!Number.isFinite(amount) || amount < 100 || amount > 5000) {
+        msg("Amount must be between ৳100 and ৳5000.");
         return;
       }
 
       if (!tx) {
-        msg(
-          "Enter Transaction ID."
-        );
-
+        msg("Enter Transaction ID.");
         return;
       }
 
-      const button =
-        document.getElementById(
-          "depSubmit"
-        );
-
+      const button = document.getElementById("depSubmit");
       button.disabled = true;
-      button.innerText =
-        "Submitting...";
+      button.innerText = "Submitting...";
 
       try {
         const data = await api({
           action: "deposit",
           userId: userId,
-          name:
-            user.first_name ||
-            "User",
+          name: user.first_name || "User",
           method: selectedMethod,
           amount: amount,
           txid: tx
         });
 
         if (data.success) {
-          msg(
-            "✅ Deposit request submitted.\n" +
-            "Status: PENDING"
-          );
-
-          document.getElementById(
-            "depAmount"
-          ).value = "";
-
-          document.getElementById(
-            "depTxid"
-          ).value = "";
-
+          msg("✅ Deposit request submitted.\nStatus: PENDING");
+          document.getElementById("depAmount").value = "";
+          document.getElementById("depTxid").value = "";
           closeDeposit();
-
         } else {
-          msg(
-            "❌ " +
-            (
-              data.error ||
-              "Deposit failed."
-            )
-          );
+          msg("❌ " + (data.error || "Deposit failed."));
         }
-
       } catch (error) {
-        console.error(
-          "Deposit error:",
-          error
-        );
-
-        msg(
-          "Deposit error: " +
-          error.message
-        );
-
+        console.error("Deposit error:", error);
+        msg("Deposit error: " + error.message);
       } finally {
         button.disabled = false;
-        button.innerText =
-          "Submit Deposit";
+        button.innerText = "Submit Deposit";
       }
     }
 
     function closeDeposit() {
-      document.getElementById(
-        "depositModal"
-      ).style.display = "none";
+      document.getElementById("depositModal").style.display = "none";
     }
-
-    /* ========================================================
-       REFERRAL
-       ======================================================== */
 
     async function openReferral() {
       const userId = getUserId();
+      if (!userId) return;
 
-      if (!userId) {
-        return;
-      }
-
-      document.getElementById(
-        "referralModal"
-      ).style.display = "flex";
-
-      document.getElementById(
-        "refLink"
-      ).innerText =
-        "Loading...";
-
-      document.getElementById(
-        "refStats"
-      ).innerText =
-        "";
+      document.getElementById("referralModal").style.display = "flex";
+      document.getElementById("refLink").innerText = "Loading...";
+      document.getElementById("refStats").innerText = "";
 
       try {
         const data = await api({
@@ -1061,127 +447,61 @@
           userId: userId
         });
 
-        if (!data.success) {
-          throw new Error(
-            data.error ||
-            "Could not load referral info."
-          );
-        }
+        if (!data.success) throw new Error(data.error || "Could not load referral info.");
 
-        referralLink =
-          data.referralLink || "";
+        referralLink = data.referralLink || "";
 
-        document.getElementById(
-          "refLink"
-        ).innerText =
-          referralLink ||
-          "Referral link unavailable.";
+        document.getElementById("refLink").innerText =
+          referralLink || "Referral link unavailable.";
 
-        const earnings =
-          Number(
-            data.referralBalance
-          ) || 0;
+        const earnings = Number(data.referralBalance) || 0;
+        const bonus = Number(data.referrerBonus) || 3;
+        const referred = Number(data.referredBonus) || 2;
 
-        const bonus =
-          Number(
-            data.referrerBonus
-          ) || 3;
-
-        document.getElementById(
-          "refStats"
-        ).innerText =
-          "Your referral earnings: " +
-          earnings +
-          " Coins\n" +
-          "You earn: " +
-          bonus +
-          " Coins per successful referral.";
-
+        document.getElementById("refStats").innerText =
+          "Your referral earnings: " + earnings + " Coins\n" +
+          "You earn: " + bonus + " Coins per successful referral.\n" +
+          "New user gets: " + referred + " Coins.";
       } catch (error) {
-        console.error(
-          "Referral error:",
-          error
-        );
-
+        console.error("Referral error:", error);
         referralLink = "";
-
-        document.getElementById(
-          "refLink"
-        ).innerText =
-          "Could not load referral link.";
-
-        document.getElementById(
-          "refStats"
-        ).innerText =
-          error.message;
+        document.getElementById("refLink").innerText = "Could not load referral link.";
+        document.getElementById("refStats").innerText = error.message;
       }
     }
 
     async function copyReferral() {
       if (!referralLink) {
-        msg(
-          "Referral link is not available."
-        );
-
+        msg("Referral link is not available.");
         return;
       }
 
       try {
-        await navigator.clipboard.writeText(
-          referralLink
-        );
-
-        msg(
-          "✅ Referral link copied."
-        );
-
+        await navigator.clipboard.writeText(referralLink);
+        msg("✅ Referral link copied.");
       } catch (error) {
-        msg(
-          referralLink
-        );
+        msg(referralLink);
       }
     }
 
     function closeReferral() {
-      document.getElementById(
-        "referralModal"
-      ).style.display = "none";
+      document.getElementById("referralModal").style.display = "none";
     }
 
     function coming(feature) {
-      msg(
-        feature +
-        " feature is coming soon."
-      );
+      msg(feature + " feature is coming soon.");
     }
 
     function scrollTopPage() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      window.scrollTo({top:0,behavior:"smooth"});
     }
 
-    /*
-     * Close modal when tapping outside the box.
-     */
-    document
-      .querySelectorAll(".modal")
-      .forEach(function(modal) {
-        modal.addEventListener(
-          "click",
-          function(event) {
-            if (
-              event.target === modal
-            ) {
-              modal.style.display =
-                "none";
-            }
-          }
-        );
+    document.querySelectorAll(".modal").forEach(function(modal) {
+      modal.addEventListener("click", function(event) {
+        if (event.target === modal) modal.style.display = "none";
       });
+    });
 
-    /* Start */
     loadBalance();
   </script>
 </body>
