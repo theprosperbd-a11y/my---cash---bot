@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1">
+
+<title>My Cash Bot - Admin Panel</title>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:Arial,sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(circle at 50% 0%,#123b31 0,transparent 30%),
+    linear-gradient(180deg,#06101d,#091728 55%,#07111f);
+}
+
+.app{
+  width:100%;
+  max-width:1100px;
+  margin:auto;
+  padding:20px 16px 40px;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.logo{
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(145deg,#35f58b,#0a8b4e);
+  color:#062015;
+  font-size:25px;
+  font-weight:900;
+}
+
+.brand h1{
+  margin:0;
+  font-size:21px;
+}
+
+.brand p{
+  margin:4px 0 0;
+  color:#91a4bd;
+  font-size:11px;
+}
+
+.status{
+  padding:8px 12px;
+  border-radius:20px;
+  color:#20df79;
+  background:#20df7918;
+  border:1px solid #20df7933;
+  font-size:11px;
+  font-weight:bold;
+}
+
+.login{
+  max-width:430px;
+  margin:70px auto;
+  padding:25px;
+  background:#12243cf5;
+  border:1px solid #668bb433;
+  border-radius:25px;
+  text-align:center;
+}
+
+.login h2{
+  margin-top:0;
+}
+
+input,
+select{
+  width:100%;
+  padding:13px;
+  margin:7px 0;
+  border:0;
+  border-radius:12px;
+  background:#0c1728;
+  color:#fff;
+  outline:none;
+  font-size:15px;
+}
+
+button{
+  border:0;
+  border-radius:14px;
+  padding:12px 15px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.primary{
+  width:100%;
+  color:#062015;
+  background:linear-gradient(135deg,#2af184,#12c66a);
+}
+
+.secondary{
+  background:#15253a;
+  color:#fff;
+  border:1px solid #668bb433;
+}
+
+.danger{
+  background:#5d1d2b;
+  color:#fff;
+}
+
+.warning{
+  background:#6a4b13;
+  color:#fff;
+}
+
+.hidden{
+  display:none !important;
+}
+
+.dashboard{
+  display:none;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:15px;
+}
+
+.card{
+  background:linear-gradient(145deg,#12243cf5,#0a192bf5);
+  border:1px solid #668bb433;
+  border-radius:20px;
+  padding:18px;
+}
+
+.card small{
+  display:block;
+  color:#91a4bd;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.card strong{
+  display:block;
+  font-size:28px;
+  margin-top:7px;
+}
+
+.green{
+  color:#20df79;
+}
+
+.orange{
+  color:#f6c453;
+}
+
+.red{
+  color:#ff7185;
+}
+
+.nav{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:15px 0;
+}
+
+.nav button{
+  color:#fff;
+  background:#15253a;
+  border:1px solid #668bb433;
+}
+
+.nav button.active{
+  color:#062015;
+  background:linear-gradient(135deg,#2af184,#12c66a);
+}
+
+.panel{
+  background:#0e1c30d9;
+  border:1px solid #668bb42e;
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:18px;
+}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.panel-head h2{
+  margin:0;
+  font-size:18px;
+}
+
+.refresh{
+  padding:9px 12px;
+}
+
+.table-wrap{
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  min-width:760px;
+  border-collapse:collapse;
+}
+
+th{
+  text-align:left;
+  padding:11px;
+  color:#91a4bd;
+  font-size:10px;
+  text-transform:uppercase;
+  border-bottom:1px solid #668bb433;
+}
+
+td{
+  padding:11px;
+  border-bottom:1px solid #668bb422;
+  font-size:12px;
+  vertical-align:middle;
+}
+
+td strong{
+  color:#20df79;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:bold;
+}
+
+.pending{
+  color:#ffd76b;
+  background:#ffd76b18;
+  border:1px solid #ffd76b33;
+}
+
+.approved{
+  color:#20df79;
+  background:#20df7918;
+  border:1px solid #20df7933;
+}
+
+.rejected{
+  color:#ff7185;
+  background:#ff718518;
+  border:1px solid #ff718533;
+}
+
+.actions{
+  display:flex;
+  gap:5px;
+  min-width:150px;
+}
+
+.actions button{
+  padding:8px 9px;
+  font-size:10px;
+}
+
+.empty{
+  text-align:center;
+  padding:30px;
+  color:#91a4bd;
+}
+
+.search{
+  max-width:350px;
+  margin-bottom:12px;
+}
+
+.user-stats{
+  display:grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+
+.user-stat{
+  background:#0c1728;
+  border-radius:12px;
+  padding:9px;
+}
+
+.user-stat small{
+  color:#91a4bd;
+  font-size:9px;
+}
+
+.user-stat b{
+  display:block;
+  margin-top:3px;
+}
+
+.footer{
+  text-align:center;
+  color:#60748e;
+  font-size:10px;
+  margin-top:20px;
+}
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:20px;
+  transform:translateX(-50%);
+  max-width:90%;
+  padding:12px 16px;
+  border-radius:12px;
+  background:#132238;
+  border:1px solid #668bb433;
+  box-shadow:0 10px 30px #0008;
+  display:none;
+  z-index:100;
+  font-size:12px;
+}
+
+@media(max-width:800px){
+
+  .cards{
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+  }
+
+}
+
+@media(max-width:500px){
+
+  .app{
+    padding:15px 10px 30px;
+  }
+
+  .header{
+    align-items:flex-start;
+  }
+
+  .brand h1{
+    font-size:18px;
+  }
+
+  .cards{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .card{
+    padding:14px;
+  }
+
+  .card strong{
+    font-size:22px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginScreen" class="login">
+
+  <div class="logo" style="margin:auto;">$</div>
+
+  <h2>🔐 Admin Panel</h2>
+
+  <p style="color:#91a4bd;font-size:12px;">
+    My Cash Bot Administration
+  </p>
+
+  <input
+    id="adminKey"
+    type="password"
+    placeholder="Enter Admin Key"
+    autocomplete="off"
+  >
+
+  <button
+    class="primary"
+    onclick="login()"
+  >
+    Login
+  </button>
+
+</div>
+
+
+<div id="adminApp" class="app dashboard">
+
+  <div class="header">
+
+    <div class="brand">
+
+      <div class="logo">$</div>
+
+      <div>
+        <h1>My Cash Bot Admin</h1>
+        <p>Deposit & Withdraw Management</p>
+      </div>
+
+    </div>
+
+    <div class="status">
+      ● ADMIN ONLINE
+    </div>
+
+  </div>
+
+
+  <!-- Dashboard Cards -->
+
+  <div class="cards">
+
+    <div class="card">
+      <small>Total Users</small>
+      <strong id="totalUsers">0</strong>
+    </div>
+
+    <div class="card">
+      <small>Pending Deposits</small>
+      <strong
+        id="pendingDeposits"
+        class="orange"
+      >0</strong>
+    </div>
+
+    <div class="card">
+      <small>Pending Withdraws</small>
+      <strong
+        id="pendingWithdraws"
+        class="orange"
+      >0</strong>
+    </div>
+
+    <div class="card">
+      <small>Total Balance</small>
+      <strong
+        id="totalBalance"
+        class="green"
+      >0</strong>
+    </div>
+
+  </div>
+
+
+  <!-- Navigation -->
+
+  <div class="nav">
+
+    <button
+      id="dashboardTab"
+      class="active"
+      onclick="showSection('dashboardSection',this)"
+    >
+      📊 Dashboard
+    </button>
+
+    <button
+      onclick="showSection('depositSection',this)"
+    >
+      💳 Deposits
+    </button>
+
+    <button
+      onclick="showSection('withdrawSection',this)"
+    >
+      💸 Withdraws
+    </button>
+
+    <button
+      onclick="showSection('usersSection',this)"
+    >
+      👥 Users
+    </button>
+
+    <button
+      class="secondary"
+      onclick="logout()"
+    >
+      Logout
+    </button>
+
+  </div>
+
+
+  <!-- Dashboard -->
+
+  <section
+    id="dashboardSection"
+    class="panel"
+  >
+
+    <div class="panel-head">
+
+      <h2>📊 Dashboard</h2>
+
+      <button
+        class="secondary refresh"
+        onclick="loadDashboard()"
+      >
+        ↻ Refresh
+      </button>
+
+    </div>
+
+    <div class="user-stats">
+
+      <div class="user-stat">
+        <small>Pending Deposit Amount</small>
+        <b id="pendingDepositAmount">0</b>
+      </div>
+
+      <div class="user-stat">
+        <small>Approved Deposit Amount</small>
+        <b id="approvedDepositAmount">0</b>
+      </div>
+
+      <div class="user-stat">
+        <small>Pending Withdraw Amount</small>
+        <b id="pendingWithdrawAmount">0</b>
+      </div>
+
+      <div class="user-stat">
+        <small>Approved Withdraw Amount</small>
+        <b id="approvedWithdrawAmount">0</b>
+      </div>
+
+      <div class="user-stat">
+        <small>Approved Deposits</small>
+        <b id="approvedDepositCount">0</b>
+      </div>
+
+      <div class="user-stat">
+        <small>Approved Withdraws</small>
+        <b id="approvedWithdrawCount">0</b>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- Deposits -->
+
+  <section
+    id="depositSection"
+    class="panel hidden"
+  >
+
+    <div class="panel-head">
+
+      <h2>💳 Deposit Requests</h2>
+
+      <button
+        class="secondary refresh"
+        onclick="loadDeposits()"
+      >
+        ↻ Refresh
+      </button>
+
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Request ID</th>
+            <th>Date</th>
+            <th>User</th>
+            <th>Method</th>
+            <th>Amount</th>
+            <th>Transaction ID</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="depositTable">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- Withdraws -->
+
+  <section
+    id="withdrawSection"
+    class="panel hidden"
+  >
+
+    <div class="panel-head">
+
+      <h2>💸 Withdraw Requests</h2>
+
+      <button
+        class="secondary refresh"
+        onclick="loadWithdraws()"
+      >
+        ↻ Refresh
+      </button>
+
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>Request ID</th>
+            <th>Date</th>
+            <th>User</th>
+            <th>Method</th>
+            <th>Amount</th>
+            <th>Account / ID</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="withdrawTable">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <!-- Users -->
+
+  <section
+    id="usersSection"
+    class="panel hidden"
+  >
+
+    <div class="panel-head">
+
+      <h2>👥 Users</h2>
+
+      <button
+        class="secondary refresh"
+        onclick="loadUsers()"
+      >
+        ↻ Refresh
+      </button>
+
+    </div>
+
+    <input
+      class="search"
+      id="userSearch"
+      type="text"
+      placeholder="Search User ID or Name..."
+      oninput="filterUsers()"
+    >
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Watch Ads</th>
+            <th>Daily</th>
+            <th>Referral</th>
+            <th>Deposit</th>
+            <th>Withdraw</th>
+            <th>Balance</th>
+            <th>Last Active</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="userTable">
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+
+  <div class="footer">
+    My Cash Bot • Admin Panel
+  </div>
+
+</div>
+
+
+<div
+  id="toast"
+  class="toast"
+></div>
+
+
+<script>
+
+/*
+ * ============================================================
+ * ADMIN API URL
+ * ============================================================
+ *
+ * After deploying Admin Code.gs as Web App,
+ * paste the new /exec URL here.
+ */
+
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbz5iVhB-b0kDLlDCshkTdWRENjTBLyPOG3Xjvo2GMf3pvImzNHiGtGNhNiUA5yoa6AwLw/exec";
+
+
+let adminKey = "";
+let allUsers = [];
+
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function showToast(message){
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.innerText =
+    String(message);
+
+  toast.style.display =
+    "block";
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+  window.toastTimer =
+    setTimeout(function(){
+
+      toast.style.display =
+        "none";
+
+    },3000);
+}
+
+
+function escapeHtml(value){
+
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+
+function money(value){
+
+  return Number(value || 0)
+    .toLocaleString();
+}
+
+
+function statusBadge(status){
+
+  const s =
+    String(status || "")
+      .toUpperCase();
+
+  let cls =
+    "pending";
+
+  if(s === "APPROVED"){
+    cls = "approved";
+  }
+
+  if(s === "REJECTED"){
+    cls = "rejected";
+  }
+
+  return `
+    <span class="badge ${cls}">
+      ${escapeHtml(s)}
+    </span>
+  `;
+}
+
+
+/* ============================================================
+   API
+   ============================================================ */
+
+async function api(action,params={}){
+
+  if(
+    !API_URL ||
+    API_URL === "PASTE_ADMIN_WEB_APP_URL_HERE"
+  ){
+    throw new Error(
+      "Admin Web App URL has not been added."
+    );
+  }
+
+  const query =
+    new URLSearchParams();
+
+  query.set(
+    "action",
+    action
+  );
+
+  query.set(
+    "key",
+    adminKey
+  );
+
+  Object.keys(params)
+    .forEach(function(k){
+
+      query.set(
+        k,
+        String(params[k])
+      );
+
+    });
+
+  query.set(
+    "_",
+    Date.now()
+  );
+
+  const response =
+    await fetch(
+      API_URL +
+      "?" +
+      query.toString(),
+      {
+        cache:"no-store"
+      }
+    );
+
+  const data =
+    await response.json();
+
+  if(!data.success){
+
+    throw new Error(
+      data.error ||
+      "Admin request failed."
+    );
+
+  }
+
+  return data;
+}
+
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+
+async function login(){
+
+  const key =
+    document
+      .getElementById("adminKey")
+      .value
+      .trim();
+
+  if(!key){
+
+    showToast(
+      "Enter Admin Key."
+    );
+
+    return;
+  }
+
+  adminKey = key;
+
+  try{
+
+    await api("dashboard");
+
+    localStorage.setItem(
+      "my_cash_admin_key",
+      adminKey
+    );
+
+    document
+      .getElementById("loginScreen")
+      .classList.add("hidden");
+
+    document
+      .getElementById("adminApp")
+      .style.display =
+      "block";
+
+    await loadDashboard();
+
+    showToast(
+      "Admin login successful."
+    );
+
+  }catch(error){
+
+    adminKey = "";
+
+    showToast(
+      error.message
+    );
+
+  }
+}
+
+
+async function autoLogin(){
+
+  const saved =
+    localStorage.getItem(
+      "my_cash_admin_key"
+    );
+
+  if(!saved){
+    return;
+  }
+
+  adminKey = saved;
+
+  try{
+
+    await api("dashboard");
+
+    document
+      .getElementById("loginScreen")
+      .classList.add("hidden");
+
+    document
+      .getElementById("adminApp")
+      .style.display =
+      "block";
+
+    await loadDashboard();
+
+  }catch(error){
+
+    adminKey = "";
+
+    localStorage.removeItem(
+      "my_cash_admin_key"
+    );
+
+  }
+}
+
+
+function logout(){
+
+  adminKey = "";
+
+  localStorage.removeItem(
+    "my_cash_admin_key"
+  );
+
+  document
+    .getElementById("adminApp")
+    .style.display =
+    "none";
+
+  document
+    .getElementById("loginScreen")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("adminKey")
+    .value = "";
+
+}
+
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+
+function showSection(id,button){
+
+  const sections = [
+    "dashboardSection",
+    "depositSection",
+    "withdrawSection",
+    "usersSection"
+  ];
+
+  sections.forEach(function(section){
+
+    document
+      .getElementById(section)
+      .classList.add("hidden");
+
+  });
+
+  document
+    .getElementById(id)
+    .classList.remove("hidden");
+
+  document
+    .querySelectorAll(".nav button")
+    .forEach(function(btn){
+
+      btn.classList.remove(
+        "active"
+      );
+
+    });
+
+  button.classList.add(
+    "active"
+  );
+
+  if(id === "depositSection"){
+    loadDeposits();
+  }
+
+  if(id === "withdrawSection"){
+    loadWithdraws();
+  }
+
+  if(id === "usersSection"){
+    loadUsers();
+  }
+
+}
+
+
+/* ============================================================
+   DASHBOARD
+   ============================================================ */
+
+async function loadDashboard(){
+
+  try{
+
+    const data =
+      await api("dashboard");
+
+    document
+      .getElementById("totalUsers")
+      .innerText =
+      money(data.users.total);
+
+    document
+      .getElementById("totalBalance")
+      .innerText =
+      money(data.users.totalBalance);
+
+    document
+      .getElementById("pendingDeposits")
+      .innerText =
+      money(data.deposits.pending);
+
+    document
+      .getElementById("pendingWithdraws")
+      .innerText =
+      money(data.withdraws.pending);
+
+    document
+      .getElementById("pendingDepositAmount")
+      .innerText =
+      money(data.deposits.pendingAmount);
+
+    document
+      .getElementById("approvedDepositAmount")
+      .innerText =
+      money(data.deposits.approvedAmount);
+
+    document
+      .getElementById("pendingWithdrawAmount")
+      .innerText =
+      money(data.withdraws.pendingAmount);
+
+    document
+      .getElementById("approvedWithdrawAmount")
+      .innerText =
+      money(data.withdraws.approvedAmount);
+
+    document
+      .getElementById("approvedDepositCount")
+      .innerText =
+      money(data.deposits.approved);
+
+    document
+      .getElementById("approvedWithdrawCount")
+      .innerText =
+      money(data.withdraws.approved);
+
+  }catch(error){
+
+    showToast(
+      error.message
+    );
+
+  }
+}
+
+
+/* ============================================================
+   DEPOSITS
+   ============================================================ */
+
+async function loadDeposits(){
+
+  const tbody =
+    document
+      .getElementById("depositTable");
+
+  tbody.innerHTML =
+    `<tr>
+      <td colspan="8" class="empty">
+        Loading...
+      </td>
+    </tr>`;
+
+  try{
+
+    const data =
+      await api("deposits");
+
+    if(!data.requests.length){
+
+      tbody.innerHTML =
+        `<tr>
+          <td colspan="8" class="empty">
+            No deposit requests found.
+          </td>
+        </tr>`;
+
+      return;
+    }
+
+    tbody.innerHTML =
+      data.requests
+        .map(function(item){
+
+          let actions = "";
+
+          if(
+            item.status === "PENDING"
+          ){
+
+            actions = `
+              <div class="actions">
+
+                <button
+                  class="primary"
+                  onclick="depositAction(
+                    '${escapeJs(item.requestId)}',
+                    'APPROVED'
+                  )"
+                >
+                  Approve
+                </button>
+
+                <button
+                  class="danger"
+                  onclick="depositAction(
+                    '${escapeJs(item.requestId)}',
+                    'REJECTED'
+                  )"
+                >
+                  Reject
+                </button>
+
+              </div>
+            `;
+
+          }else{
+
+            actions =
+              `<span style="color:#60748e">
+                Completed
+              </span>`;
+
+          }
+
+          return `
+            <tr>
+
+              <td>
+                <strong>
+                  ${escapeHtml(item.requestId)}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(item.date)}
+              </td>
+
+              <td>
+                ${escapeHtml(item.name)}
+                <br>
+                <small style="color:#91a4bd">
+                  ${escapeHtml(item.userId)}
+                </small>
+              </td>
+
+              <td>
+                ${escapeHtml(item.method)}
+              </td>
+
+              <td>
+                <strong>
+                  ৳${money(item.amount)}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(item.transactionId)}
+              </td>
+
+              <td>
+                ${statusBadge(item.status)}
+              </td>
+
+              <td>
+                ${actions}
+              </td>
+
+            </tr>
+          `;
+
+        })
+        .join("");
+
+  }catch(error){
+
+    tbody.innerHTML =
+      `<tr>
+        <td colspan="8" class="empty">
+          ${escapeHtml(error.message)}
+        </td>
+      </tr>`;
+
+  }
+}
+
+
+async function depositAction(
+  requestId,
+  status
+){
+
+  const actionText =
+    status === "APPROVED"
+      ? "approve"
+      : "reject";
+
+  if(
+    !confirm(
+      "Are you sure you want to " +
+      actionText +
+      " this deposit?"
+    )
+  ){
+
+    return;
+
+  }
+
+  try{
+
+    const data =
+      await api(
+        "deposit_action",
+        {
+          requestId:
+            requestId,
+
+          status:
+            status
+        }
+      );
+
+    showToast(
+      data.message
+    );
+
+    await loadDeposits();
+    await loadDashboard();
+
+  }catch(error){
+
+    showToast(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   WITHDRAWS
+   ============================================================ */
+
+async function loadWithdraws(){
+
+  const tbody =
+    document
+      .getElementById("withdrawTable");
+
+  tbody.innerHTML =
+    `<tr>
+      <td colspan="8" class="empty">
+        Loading...
+      </td>
+    </tr>`;
+
+  try{
+
+    const data =
+      await api("withdraws");
+
+    if(!data.requests.length){
+
+      tbody.innerHTML =
+        `<tr>
+          <td colspan="8" class="empty">
+            No withdraw requests found.
+          </td>
+        </tr>`;
+
+      return;
+    }
+
+    tbody.innerHTML =
+      data.requests
+        .map(function(item){
+
+          let actions = "";
+
+          if(
+            item.status === "PENDING"
+          ){
+
+            actions = `
+              <div class="actions">
+
+                <button
+                  class="primary"
+                  onclick="withdrawAction(
+                    '${escapeJs(item.requestId)}',
+                    'APPROVED'
+                  )"
+                >
+                  Approve
+                </button>
+
+                <button
+                  class="danger"
+                  onclick="withdrawAction(
+                    '${escapeJs(item.requestId)}',
+                    'REJECTED'
+                  )"
+                >
+                  Reject
+                </button>
+
+              </div>
+            `;
+
+          }else{
+
+            actions =
+              `<span style="color:#60748e">
+                Completed
+              </span>`;
+
+          }
+
+          return `
+            <tr>
+
+              <td>
+                <strong>
+                  ${escapeHtml(item.requestId)}
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(item.date)}
+              </td>
+
+              <td>
+                ${escapeHtml(item.name)}
+                <br>
+                <small style="color:#91a4bd">
+                  ${escapeHtml(item.userId)}
+                </small>
+              </td>
+
+              <td>
+                ${escapeHtml(item.method)}
+              </td>
+
+              <td>
+                <strong>
+                  ${money(item.amount)}
+                  coins
+                </strong>
+              </td>
+
+              <td>
+                ${escapeHtml(item.account)}
+              </td>
+
+              <td>
+                ${statusBadge(item.status)}
+              </td>
+
+              <td>
+                ${actions}
+              </td>
+
+            </tr>
+          `;
+
+        })
+        .join("");
+
+  }catch(error){
+
+    tbody.innerHTML =
+      `<tr>
+        <td colspan="8" class="empty">
+          ${escapeHtml(error.message)}
+        </td>
+      </tr>`;
+
+  }
+}
+
+
+async function withdrawAction(
+  requestId,
+  status
+){
+
+  const actionText =
+    status === "APPROVED"
+      ? "approve"
+      : "reject";
+
+  if(
+    !confirm(
+      "Are you sure you want to " +
+      actionText +
+      " this withdraw?"
+    )
+  ){
+
+    return;
+
+  }
+
+  try{
+
+    const data =
+      await api(
+        "withdraw_action",
+        {
+          requestId:
+            requestId,
+
+          status:
+            status
+        }
+      );
+
+    showToast(
+      data.message
+    );
+
+    await loadWithdraws();
+    await loadDashboard();
+
+  }catch(error){
+
+    showToast(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ============================================================
+   USERS
+   ============================================================ */
+
+async function loadUsers(){
+
+  const tbody =
+    document
+      .getElementById("userTable");
+
+  tbody.innerHTML =
+    `<tr>
+      <td colspan="9" class="empty">
+        Loading...
+      </td>
+    </tr>`;
+
+  try{
+
+    const data =
+      await api("users");
+
+    allUsers =
+      data.users || [];
+
+    renderUsers(
+      allUsers
+    );
+
+  }catch(error){
+
+    tbody.innerHTML =
+      `<tr>
+        <td colspan="9" class="empty">
+          ${escapeHtml(error.message)}
+        </td>
+      </tr>`;
+
+  }
+}
+
+
+function renderUsers(users){
+
+  const tbody =
+    document
+      .getElementById("userTable");
+
+  if(!users.length){
+
+    tbody.innerHTML =
+      `<tr>
+        <td colspan="9" class="empty">
+          No users found.
+        </td>
+      </tr>`;
+
+    return;
+  }
+
+  tbody.innerHTML =
+    users
+      .map(function(user){
+
+        return `
+          <tr>
+
+            <td>
+              ${escapeHtml(user.userId)}
+            </td>
+
+            <td>
+              ${escapeHtml(user.name)}
+            </td>
+
+            <td>
+              ${money(user.watchAds)}
+            </td>
+
+            <td>
+              ${money(user.dailyBonus)}
+            </td>
+
+            <td>
+              ${money(user.referral)}
+            </td>
+
+            <td>
+              ${money(user.deposit)}
+            </td>
+
+            <td>
+              ${money(user.withdraw)}
+            </td>
+
+            <td>
+              <strong>
+                ${money(user.balance)}
+              </strong>
+            </td>
+
+            <td>
+              ${escapeHtml(user.lastActive)}
+            </td>
+
+          </tr>
+        `;
+
+      })
+      .join("");
+
+}
+
+
+function filterUsers(){
+
+  const search =
+    document
+      .getElementById("userSearch")
+      .value
+      .toLowerCase()
+      .trim();
+
+  const filtered =
+    allUsers.filter(function(user){
+
+      return (
+        String(user.userId)
+          .toLowerCase()
+          .includes(search) ||
+
+        String(user.name)
+          .toLowerCase()
+          .includes(search)
+      );
+
+    });
+
+  renderUsers(
+    filtered
+  );
+
+}
+
+
+/* ============================================================
+   JS ESCAPE
+   ============================================================ */
+
+function escapeJs(value){
+
+  return String(value ?? "")
+    .replace(/\\/g,"\\\\")
+    .replace(/'/g,"\\'")
+    .replace(/\r/g,"\\r")
+    .replace(/\n/g,"\\n");
+
+}
+
+
+/* ============================================================
+   START
+   ============================================================ */
+
+autoLogin();
+
+</script>
+
+</body>
+</html>
