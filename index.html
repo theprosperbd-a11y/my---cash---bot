@@ -146,6 +146,7 @@ input,select{
     <button class="secondary" onclick="claimDailyBonus()">🎁 Daily Bonus</button>
     <button class="secondary" onclick="openReferral()">👥 Referral</button>
     <button class="secondary" onclick="openDeposit()">💳 Deposit</button>
+    <button class="secondary" onclick="openWithdraw()">💸 Withdraw</button>
   </div>
 
   <div class="section">
@@ -193,6 +194,23 @@ input,select{
     </div>
 
     <button id="depositBtn" onclick="submitDeposit()">Submit Deposit</button>
+  </div>
+</div>
+
+<!-- Withdraw Modal -->
+<div class="modal" id="withdrawModal">
+  <div class="box">
+    <button class="close" onclick="closeModal('withdrawModal')">✕</button>
+    <h2>💸 Withdraw</h2>
+    <div class="small">Minimum withdrawal: 100 coins • Requests are reviewed by admin.</div>
+
+    <select id="withdrawMethod"></select>
+    <input id="withdrawAmount" type="number" min="100" placeholder="Amount (minimum 100 coins)">
+    <input id="withdrawAccount" type="text" placeholder="Your bKash / Nagad / Rocket / Binance ID">
+
+    <div class="small">Available balance: <b id="withdrawAvailable">0</b> coins</div>
+
+    <button id="withdrawBtn" onclick="submitWithdraw()">Submit Withdraw</button>
   </div>
 </div>
 
@@ -573,6 +591,132 @@ async function submitDeposit() {
   } finally {
     button.disabled = false;
     button.innerText = "Submit Deposit";
+  }
+}
+
+async function openWithdraw() {
+  if (!user || !user.id) {
+    showMessage("Telegram user information not found.");
+    return;
+  }
+
+  document.getElementById("withdrawModal").style.display = "block";
+
+  try {
+    const response = await fetch(
+      apiUrl({ action: "payment_methods" }),
+      { cache: "no-store" }
+    );
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.error || "Payment methods failed.");
+    }
+
+    const methods = data.methods || {};
+    const select = document.getElementById("withdrawMethod");
+    select.innerHTML = "";
+
+    Object.keys(methods).forEach(function(method) {
+      const option = document.createElement("option");
+      option.value = method;
+      option.textContent = method;
+      select.appendChild(option);
+    });
+
+    if (!Object.keys(methods).length) {
+      throw new Error("No active payment method. Please contact admin.");
+    }
+
+    await updateWithdrawBalance();
+  } catch (error) {
+    showMessage(error.message);
+  }
+}
+
+async function updateWithdrawBalance() {
+  try {
+    const response = await fetch(
+      apiUrl({
+        userId: String(user.id),
+        name: user.first_name || "User"
+      }),
+      { cache: "no-store" }
+    );
+    const data = await response.json();
+    if (data.success) {
+      setBalance(data.balance);
+      document.getElementById("withdrawAvailable").innerText =
+        Number(data.balance || 0);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function submitWithdraw() {
+  if (!user || !user.id) {
+    showMessage("Telegram user information not found.");
+    return;
+  }
+
+  const method = document.getElementById("withdrawMethod").value;
+  const amount = Number(document.getElementById("withdrawAmount").value);
+  const account = document.getElementById("withdrawAccount").value.trim();
+  const button = document.getElementById("withdrawBtn");
+
+  if (!method) {
+    showMessage("Select a payment method.");
+    return;
+  }
+
+  if (!amount || amount < 100) {
+    showMessage("Minimum withdrawal is 100 coins.");
+    return;
+  }
+
+  if (!account) {
+    showMessage("Enter your payment account number / ID.");
+    return;
+  }
+
+  button.disabled = true;
+  button.innerText = "Submitting...";
+
+  try {
+    const response = await fetch(
+      apiUrl({
+        action: "withdraw",
+        userId: String(user.id),
+        name: user.first_name || "User",
+        method: method,
+        amount: String(amount),
+        account: account
+      }),
+      { cache: "no-store" }
+    );
+
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error(data.error || "Withdraw failed.");
+    }
+
+    showMessage(
+      "Withdraw request submitted successfully.\n" +
+      "Request ID: " + data.requestId + "\n" +
+      "Status: PENDING"
+    );
+
+    document.getElementById("withdrawAmount").value = "";
+    document.getElementById("withdrawAccount").value = "";
+    closeModal("withdrawModal");
+    await loadBalance();
+  } catch (error) {
+    showMessage("Withdraw error: " + error.message);
+  } finally {
+    button.disabled = false;
+    button.innerText = "Submit Withdraw";
   }
 }
 
